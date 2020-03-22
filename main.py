@@ -21,7 +21,6 @@ def main():
             return True  #exit game
         player.handle_keys(key)
         renderer.render([player])
-        # tcod.console_flush()
 
 if __name__ == "__main__":
     # Game config
