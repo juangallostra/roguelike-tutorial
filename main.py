@@ -22,9 +22,9 @@ def main(turn_based):
     # Game map
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
     game_map.generate_map()
+    player_pos = game_map.player_initial_pos
     # instantiate player
-    # player = MainPlayer(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, '@')
-    player = MainPlayer(25, 23, '@')
+    player = MainPlayer(player_pos[0], player_pos[1], '@')
     npc = BaseObject(SCREEN_WIDTH // 2 - 5, SCREEN_HEIGHT // 2, '@', tcod.yellow)
     objects = [player, npc]
     # Game loop
