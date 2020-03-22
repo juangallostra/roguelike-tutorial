@@ -22,3 +22,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
 - The game map is a class instead of a list of lists.
 - The dungeon has more than one level (it enables having `N` levels). Change level by using `z` to go up and `x` to go down.
+
+## TODO List
+
+- [ ] Add stairs to move between dungeon levels
