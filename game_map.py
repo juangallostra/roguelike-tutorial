@@ -5,6 +5,7 @@ ROOM_MIN_SIZE = 6
 MAX_ROOMS = 30
 N_LEVELS = 3
 
+
 class Tile():
     # A tile of the map and its properties
     def __init__(self, blocked, block_sight = None):
@@ -17,6 +18,7 @@ class Tile():
     def get_char(self):
         if self.blocked: return '#'
         return '.'
+
 
 class Rect():
     def __init__(self, x, y, w, h):
@@ -35,6 +37,7 @@ class Rect():
         # returns true if this rectangle intersects with another one
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
+
 
 class GameMap():
     def __init__(self, width, height):
@@ -56,7 +59,6 @@ class GameMap():
                 self.change_level(self.active_level + 1)
             if keypress.c == ord('x'):
                 self.change_level(self.active_level - 1)
-
 
     def change_level(self, target_level):
         if 0 <= target_level < self._levels:
