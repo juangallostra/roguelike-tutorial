@@ -4,7 +4,7 @@ Folowing the Python tutorial at [roguebasin](http://www.roguebasin.com/index.php
 
 ## Current status
 
-I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_3])
+I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_3)
 
 
 ## List of modifications
