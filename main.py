@@ -1,8 +1,9 @@
 import libtcodpy as tcod
 
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, LIMIT_FPS, WINDOW_TITLE, FULLSCREEN
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, LIMIT_FPS, WINDOW_TITLE, FULLSCREEN, MAP_WIDTH, MAP_HEIGHT
 from player import MainPlayer, BaseObject
 from renderer import RenderScreen
+from game_map import GameMap
 
 FONT_PATH = 'arial10x10.png'
 FONT_FLAGS = tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD
@@ -18,6 +19,9 @@ def get_key_event(turn_based=None):
 
 def main(turn_based):
     renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
+    # Game map
+    game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
+    game_map.generate_map()
     # instantiate player
     player = MainPlayer(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, '@')
     npc = BaseObject(SCREEN_WIDTH // 2 - 5, SCREEN_HEIGHT // 2, '@', tcod.yellow)
@@ -29,9 +33,9 @@ def main(turn_based):
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
         elif key.vk == tcod.KEY_ESCAPE:
-            return True  #exit game
+            return True  # exit game
         player.handle_keys(key)
-        renderer.render(objects)
+        renderer.render_all(objects, game_map)
 
 if __name__ == "__main__":
     # Game config
