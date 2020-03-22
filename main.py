@@ -13,7 +13,6 @@ def main():
     player = MainPlayer(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, '@')
     # Game loop
     while not tcod.console_is_window_closed():
-        tcod.console_set_default_foreground(0, tcod.white)
         key = tcod.console_check_for_keypress()
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen

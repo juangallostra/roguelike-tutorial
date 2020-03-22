@@ -5,6 +5,7 @@ class RenderScreen():
         pass
 
     def render(self, elements):
+        tcod.console_set_default_foreground(0, tcod.white)
         for e in elements:
             tcod.console_put_char(
                 0, 
