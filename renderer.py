@@ -17,6 +17,7 @@ class RenderScreen():
         tcod.console_put_char(self._con, element.get_x_position(), element.get_y_position(), ' ', tcod.BKGND_NONE)
 
     def render(self, elements):
+        # render game state
         tcod.console_set_default_foreground(self._con, tcod.white)
         for e in elements:
             self.draw(e)
