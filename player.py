@@ -1,10 +1,14 @@
 import libtcodpy as tcod
 
-class BasePlayer():
+class BaseObject():
     def __init__(self, x, y, char):
         self._char = char
         self._x = x
         self._y = y
+        self._color = tcod.white
+
+    def get_color(self):
+        return self._color
 
     def get_char(self):
         return self._char
@@ -18,21 +22,26 @@ class BasePlayer():
     def get_y_position(self):
         return self._y
 
+    def move(self, dx, dy):
+        self._x += dx
+        self._y += dy
 
-class MainPlayer(BasePlayer):
+
+class MainPlayer(BaseObject):
     def __init__(self, x, y, char):
         super().__init__(x, y, char)
     
     def handle_keys(self, keypress=None):
         # movement keys
         if keypress.vk == tcod.KEY_UP:
-            self._y = self._y - 1
+            self.move(0, -1)
  
         elif keypress.vk == tcod.KEY_DOWN:
-            self._y = self._y + 1
+            self.move(0, 1)
  
         elif keypress.vk == tcod.KEY_LEFT:
-            self._x = self._x - 1
- 
+            self.move(-1, 0)
+
         elif keypress.vk == tcod.KEY_RIGHT:
-            self._x = self._x + 1
+            self.move(1, 0)
+
