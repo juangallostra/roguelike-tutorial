@@ -1,5 +1,5 @@
 # roguelike-tutorial
-Following the Python tutorial at [roguebasin](http://www.roguebasin.com/index.php?title=Main_Page).
+So, after a week of confinement due to COVID-19, I have decided to follow the Python tutorial at [roguebasin](http://www.roguebasin.com/index.php?title=Main_Page).
 
 
 ## Development status
