@@ -22,26 +22,27 @@ class BaseObject():
     def get_y_position(self):
         return self._y
 
-    def move(self, dx, dy):
-        self._x += dx
-        self._y += dy
+    def move(self, dx, dy, game_map):
+        if not game_map.map[self._x + dx][self._y + dy].blocked:
+            self._x += dx
+            self._y += dy
 
 
 class MainPlayer(BaseObject):
     def __init__(self, x, y, char):
         super().__init__(x, y, char)
     
-    def handle_keys(self, keypress=None):
+    def handle_keys(self, game_map, keypress=None):
         # movement keys
         if keypress.vk == tcod.KEY_UP:
-            self.move(0, -1)
+            self.move(0, -1, game_map)
  
         elif keypress.vk == tcod.KEY_DOWN:
-            self.move(0, 1)
+            self.move(0, 1, game_map)
  
         elif keypress.vk == tcod.KEY_LEFT:
-            self.move(-1, 0)
+            self.move(-1, 0, game_map)
 
         elif keypress.vk == tcod.KEY_RIGHT:
-            self.move(1, 0)
+            self.move(1, 0, game_map)
 

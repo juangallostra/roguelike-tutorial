@@ -34,7 +34,7 @@ def main(turn_based):
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
         elif key.vk == tcod.KEY_ESCAPE:
             return True  # exit game
-        player.handle_keys(key)
+        player.handle_keys(game_map, key)
         renderer.render_all(objects, game_map)
 
 if __name__ == "__main__":
