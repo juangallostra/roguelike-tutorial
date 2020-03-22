@@ -17,7 +17,7 @@ def get_key_event(turn_based=None):
     return key
 
 def main(turn_based):
-    renderer = RenderScreen()
+    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
     # instantiate player
     player = MainPlayer(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, '@')
     # Game loop
