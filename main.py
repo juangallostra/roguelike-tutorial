@@ -1,7 +1,7 @@
 import libtcodpy as tcod
 
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, LIMIT_FPS, WINDOW_TITLE, FULLSCREEN
-from player import MainPlayer
+from player import MainPlayer, BaseObject
 from renderer import RenderScreen
 
 FONT_PATH = 'arial10x10.png'
@@ -20,6 +20,8 @@ def main(turn_based):
     renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
     # instantiate player
     player = MainPlayer(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, '@')
+    npc = BaseObject(SCREEN_WIDTH // 2 - 5, SCREEN_HEIGHT // 2, '@', tcod.yellow)
+    objects = [player, npc]
     # Game loop
     while not tcod.console_is_window_closed():
         key = get_key_event(turn_based)
@@ -29,7 +31,7 @@ def main(turn_based):
         elif key.vk == tcod.KEY_ESCAPE:
             return True  #exit game
         player.handle_keys(key)
-        renderer.render([player])
+        renderer.render(objects)
 
 if __name__ == "__main__":
     # Game config
