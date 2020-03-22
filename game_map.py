@@ -36,15 +36,11 @@ class GameMap():
                     self.map[x][y].blocked = False
                     self.map[x][y].block_sight = False  
 
-    def create_h_tunnel(self, x1, x2, y):
-        # horizontal tunnel
-        for x in range(min(x1, x2), max(x1, x2) + 1):
-            self.map[x][y].blocked = False
-            self.map[x][y].block_sight = False
-
-    def create_v_tunnel(self, y1, y2, x):
-        # vertical tunnel
-        for y in range(min(y1, y2), max(y1, y2) + 1):
+    def create_tunnel(self, c1, c2, fixed_coord, horizontal):
+        # create a tunnel
+        for c in range(min(c1, c2), max(c1, c2) + 1):
+            x = c if horizontal else fixed_coord
+            y = c if not horizontal else fixed_coord
             self.map[x][y].blocked = False
             self.map[x][y].block_sight = False
 
@@ -55,4 +51,5 @@ class GameMap():
         self.create_room(room1)
         self.create_room(room2)
         # connect rooms
-        self.create_h_tunnel(25, 55, 23)
+        self.create_tunnel(25, 55, 23, horizontal=True)
+        self.create_tunnel(25, 55, 22, horizontal=True)
