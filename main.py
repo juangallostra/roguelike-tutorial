@@ -36,7 +36,7 @@ def main(turn_based):
         elif key.vk == tcod.KEY_ESCAPE:
             return True  # exit game
         player.handle_keys(game_map, key)
-        renderer.render_all(objects, game_map)
+        renderer.render_all(objects, game_map, show_map_chars=False)
 
 if __name__ == "__main__":
     # Game config
