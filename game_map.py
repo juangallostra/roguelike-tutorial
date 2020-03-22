@@ -9,9 +9,16 @@ class Tile():
         if block_sight is None: block_sight = blocked
         self.block_sight = block_sight
 
+class Rect():
+    def __init__(self, x, y, w, h):
+        self.x1 = x
+        self.x2 = x + w
+        self.y1 = y
+        self.y2 =  y + h
+
 class GameMap():
     def __init__(self, width, height):
-        self.map = [[Tile(False) for y in range(height)] for x in range(width)]
+        self.map = [[Tile(True) for y in range(height)] for x in range(width)]
         self._width = width
         self._height = height
         self.color_dark_wall = tcod.Color(0, 0, 100)
@@ -23,8 +30,29 @@ class GameMap():
     def get_height(self):
         return self._height
 
+    def create_room(self, rect):
+          for x in range(rect.x1 + 1, rect.x2):
+                for y in range(rect.y1 + 1, rect.y2):
+                    self.map[x][y].blocked = False
+                    self.map[x][y].block_sight = False  
+
+    def create_h_tunnel(self, x1, x2, y):
+        # horizontal tunnel
+        for x in range(min(x1, x2), max(x1, x2) + 1):
+            self.map[x][y].blocked = False
+            self.map[x][y].block_sight = False
+
+    def create_v_tunnel(self, y1, y2, x):
+        # vertical tunnel
+        for y in range(min(y1, y2), max(y1, y2) + 1):
+            self.map[x][y].blocked = False
+            self.map[x][y].block_sight = False
+
     def generate_map(self):
-        self.map[30][22].blocked = True
-        self.map[30][22].block_sight = True
-        self.map[50][22].blocked = True
-        self.map[50][22].block_sight = True
+        #create two rooms
+        room1 = Rect(20, 15, 10, 15)
+        room2 = Rect(50, 15, 10, 15)
+        self.create_room(room1)
+        self.create_room(room2)
+        # connect rooms
+        self.create_h_tunnel(25, 55, 23)
