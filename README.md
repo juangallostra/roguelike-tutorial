@@ -16,6 +16,8 @@ I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelik
 
 ## List of modifications
 
+Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
+
 - Instead of each object drawing and clearing itself, rendering is handled by an independent class (`Renderer`).
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
 - The game map is a class instead of a list of lists.
