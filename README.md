@@ -1,5 +1,5 @@
 # roguelike-tutorial
-Folowing the Python tutorial at [roguebasin](http://www.roguebasin.com/index.php?title=Main_Page).
+Following the Python tutorial at [roguebasin](http://www.roguebasin.com/index.php?title=Main_Page).
 
 
 ## Development status
