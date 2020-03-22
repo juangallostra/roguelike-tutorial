@@ -5,7 +5,6 @@ class RenderScreen():
         pass
 
     def render(self, elements):
-        # print(self.get_prev_position(), self.get_position())
         for e in elements:
             tcod.console_put_char(
                 0, 
