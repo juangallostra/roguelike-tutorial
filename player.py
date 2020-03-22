@@ -1,11 +1,11 @@
 import libtcodpy as tcod
 
 class BaseObject():
-    def __init__(self, x, y, char):
+    def __init__(self, x, y, char, color = tcod.white):
         self._char = char
         self._x = x
         self._y = y
-        self._color = tcod.white
+        self._color = color
 
     def get_color(self):
         return self._color

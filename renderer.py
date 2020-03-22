@@ -21,6 +21,7 @@ class RenderScreen():
         for e in elements:
             self.draw(e)
             tcod.console_blit(self._con, 0, 0, self._width, self._height, 0, 0, 0)
-            tcod.console_flush()
+        tcod.console_flush()
+        for e in elements:
             self.clear(e)
 
