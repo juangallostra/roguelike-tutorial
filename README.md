@@ -27,4 +27,4 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
-- [ x ] Add stairs to move between dungeon levels.
+- [x] Add stairs to move between dungeon levels.
