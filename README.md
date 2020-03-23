@@ -31,5 +31,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 - [ ] Document code.
 - [ ] Only show objects that are in the current level.
+- [ ] Change color palette.
+- [ ] Add option to play with alphanumeric charss instead of colours.
 - [x] Add stairs to move between dungeon levels.
 - [x] Fix field of view.
