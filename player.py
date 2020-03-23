@@ -62,5 +62,7 @@ class MainPlayer(BaseObject):
         elif keypress.vk == tcod.KEY_CHAR:
             if keypress.c == ord('z') and game_map.map[self._x][self._y].stair[UP]:
                 game_map.change_level(game_map.active_level + 1)
+                game_map.fov_recompute = True
             if keypress.c == ord('x') and game_map.map[self._x][self._y].stair[DOWN]:
                 game_map.change_level(game_map.active_level - 1)
+                game_map.fov_recompute = True

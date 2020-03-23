@@ -7,6 +7,7 @@ C_DARK_GROUND = tcod.Color(50, 50, 150)
 C_LIGHT_GROUND = tcod.Color(200, 180, 50)
 C_STAIR = tcod.Color(124, 52, 37)
 C_LIGHT_STAIR = tcod.Color(186, 142, 32)
+C_BLACK = tcod.Color(0, 0, 0)
 
 UP = 'up'
 DOWN = 'down'
@@ -76,7 +77,6 @@ class RenderScreen():
             for x in range(game_map.get_width()):
                 visible = tcod.map_is_in_fov(game_map.fov_map, x, y)
                 wall = game_map.map[x][y].block_sight
-
                 if show_chars:
                     tcod.console_put_char(
                         self._con,
@@ -86,31 +86,39 @@ class RenderScreen():
                         tcod.BKGND_NONE
                     )
                 if not visible:
-                    if wall:
-                        tcod.console_set_char_background(
-                            self._con,
-                            x,
-                            y,
-                            C_DARK_WALL,
-                            tcod.BKGND_SET
-                        )
-                    else:
-                        if game_map.map[x][y].stair[UP] or game_map.map[x][y].stair[DOWN]:
+                    tcod.console_set_char_background(
+                        self._con,
+                        x,
+                        y,
+                        C_BLACK,
+                        tcod.BKGND_SET
+                    )
+                    if game_map.map[x][y].explored:
+                        if wall:
                             tcod.console_set_char_background(
                                 self._con,
                                 x,
                                 y,
-                                C_STAIR,
+                                C_DARK_WALL,
                                 tcod.BKGND_SET
                             )
                         else:
-                            tcod.console_set_char_background(
-                                self._con,
-                                x,
-                                y,
-                                C_DARK_GROUND,
-                                tcod.BKGND_SET
-                            )
+                            if game_map.map[x][y].stair[UP] or game_map.map[x][y].stair[DOWN]:
+                                tcod.console_set_char_background(
+                                    self._con,
+                                    x,
+                                    y,
+                                    C_STAIR,
+                                    tcod.BKGND_SET
+                                )
+                            else:
+                                tcod.console_set_char_background(
+                                    self._con,
+                                    x,
+                                    y,
+                                    C_DARK_GROUND,
+                                    tcod.BKGND_SET
+                                )
                 else:
                     #it's visible
                     if wall:
@@ -126,7 +134,8 @@ class RenderScreen():
                             )
                         else:
                             tcod.console_set_char_background(self._con, x, y, C_LIGHT_GROUND, tcod.BKGND_SET)
-
+                    game_map.map[x][y].explored = True
+    
     def render_all(self, objects, game_map, show_map_chars=False):
         # grab player
         player = list(filter(lambda x: x.is_player(), objects))[0]

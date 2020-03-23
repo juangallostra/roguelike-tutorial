@@ -11,11 +11,12 @@ DOWN = 'down'
 class Tile():
     # A tile of the map and its properties
     def __init__(self, blocked, block_sight = None):
-        # is it a wall ?
+        # is it a wall?
         self.blocked = blocked
-        # is it a stair ?
-        self.stair = {'up': False, 'down': False}        
- 
+        # is it a stair?
+        self.stair = {'up': False, 'down': False}      
+        # has it been explored?
+        self.explored = False
         # By default, if a tile is blocked, it also blocks sight
         if block_sight is None: block_sight = blocked
         self.block_sight = block_sight
