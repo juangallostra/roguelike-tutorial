@@ -46,12 +46,10 @@ class GameMap():
         
         self._levels = N_LEVELS
         self.active_level = 0
-        self.full_map = {i: [[Tile(True) for y in range(height)] for x in range(width)] for i in range(N_LEVELS)}
+        self.full_map = {
+            i: [[Tile(True) for y in range(height)] for x in range(width)] for i in range(N_LEVELS)
+        }
         self.map = self.full_map[self.active_level]
-        
-        self.color_dark_wall = tcod.Color(0, 0, 100)
-        self.color_dark_ground = tcod.Color(50, 50, 150)
-        self.color_stair = tcod.Color(124, 52, 37)
 
     def handle_keys(self, keypress=None):
         if keypress.vk == tcod.KEY_CHAR:
@@ -111,8 +109,8 @@ class GameMap():
                         failed = True
                         break
                 if not failed:
-                # this means there are no intersections, so this room is valid
-                # "paint" it to the map's tiles
+                    # this means there are no intersections, so this room is valid
+                    # "paint" it to the map's tiles
                     self.create_room(new_room)
  
                     # center coordinates of new room, will be useful later
