@@ -59,7 +59,7 @@ class GameMap():
         }
 
         # Forces FOV recalculation
-        self.fov_recompute = False
+        self.fov_recompute = True
         # FOV maps have to be generated after dungeon generation
         # because if they are created before all tiles are blocked
         # the FOV algorithm doesn't work as expected
