@@ -72,13 +72,22 @@ class RenderScreen():
                             game_map.map[x][y].get_char(),
                             tcod.BKGND_NONE
                         )
-                    tcod.console_set_char_background(
-                        self._con,
-                        x,
-                        y,
-                        C_DARK_GROUND,
-                        tcod.BKGND_SET
-                    )
+                    if game_map.map[x][y].is_stair:
+                        tcod.console_set_char_background(
+                            self._con,
+                            x,
+                            y,
+                            C_STAIR,
+                            tcod.BKGND_SET
+                        )
+                    else:
+                        tcod.console_set_char_background(
+                            self._con,
+                            x,
+                            y,
+                            C_DARK_GROUND,
+                            tcod.BKGND_SET
+                        )
 
     def render_all(self, objects, game_map, show_map_chars=False):
         self.render_map(game_map, show_chars=show_map_chars)

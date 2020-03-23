@@ -5,11 +5,17 @@ ROOM_MIN_SIZE = 6
 MAX_ROOMS = 30
 N_LEVELS = 3
 
+UP = 'up'
+DOWN = 'down'
 
 class Tile():
     # A tile of the map and its properties
     def __init__(self, blocked, block_sight = None):
+        # is it a wall ?
         self.blocked = blocked
+        # is it a stair ?
+        self.is_stair = False       
+        self.stair = {'up': False, 'down': False}        
  
         # By default, if a tile is blocked, it also blocks sight
         if block_sight is None: block_sight = blocked
@@ -84,6 +90,24 @@ class GameMap():
             self.map[x][y].blocked = False
             self.map[x][y].block_sight = False
 
+    def add_stairs(self):
+        # connect all levels with stairs
+        # for each level, find a tile that connects with
+        # the next level
+        for level in range(self._levels - 1):
+            valid_stair = False
+            while not valid_stair:
+                # pick a random tile
+                x = tcod.random_get_int(0, 0, self._width - 1)
+                y = tcod.random_get_int(0, 0, self._height - 1)
+                # Check if it is walkable in levels being connected
+                if not self.full_map[level][x][y].blocked and not self.full_map[level + 1][x][y].blocked:
+                    self.full_map[level][x][y].stair[UP] = True
+                    self.full_map[level][x][y].is_stair = True
+                    self.full_map[level + 1][x][y].stair[DOWN] = True
+                    self.full_map[level + 1][x][y].is_stair = True
+                    valid_stair = True
+
     def generate_map(self):
         for level in range(self._levels):
             # Activate that level
@@ -139,4 +163,5 @@ class GameMap():
                     # finally, append the new room to the list
                     rooms.append(new_room)
                     num_rooms += 1
+        self.add_stairs()
         self.change_level(0)
