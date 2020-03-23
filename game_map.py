@@ -14,7 +14,6 @@ class Tile():
         # is it a wall ?
         self.blocked = blocked
         # is it a stair ?
-        self.is_stair = False       
         self.stair = {'up': False, 'down': False}        
  
         # By default, if a tile is blocked, it also blocks sight
@@ -23,6 +22,8 @@ class Tile():
     
     def get_char(self):
         if self.blocked: return '#'
+        if self.stair[UP]: return '>'
+        if self.stair[DOWN]: return '<'
         return '.'
 
 
@@ -56,13 +57,6 @@ class GameMap():
             i: [[Tile(True) for y in range(height)] for x in range(width)] for i in range(N_LEVELS)
         }
         self.map = self.full_map[self.active_level]
-
-    def handle_keys(self, keypress=None):
-        if keypress.vk == tcod.KEY_CHAR:
-            if keypress.c == ord('z'):
-                self.change_level(self.active_level + 1)
-            if keypress.c == ord('x'):
-                self.change_level(self.active_level - 1)
 
     def change_level(self, target_level):
         if 0 <= target_level < self._levels:
@@ -103,9 +97,7 @@ class GameMap():
                 # Check if it is walkable in levels being connected
                 if not self.full_map[level][x][y].blocked and not self.full_map[level + 1][x][y].blocked:
                     self.full_map[level][x][y].stair[UP] = True
-                    self.full_map[level][x][y].is_stair = True
                     self.full_map[level + 1][x][y].stair[DOWN] = True
-                    self.full_map[level + 1][x][y].is_stair = True
                     valid_stair = True
 
     def generate_map(self):

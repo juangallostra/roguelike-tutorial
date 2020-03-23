@@ -1,5 +1,8 @@
 import libtcodpy as tcod
 
+UP = 'up'
+DOWN = 'down'
+
 class BaseObject():
     def __init__(self, x, y, char, color = tcod.white):
         self._char = char
@@ -45,4 +48,10 @@ class MainPlayer(BaseObject):
 
         elif keypress.vk == tcod.KEY_RIGHT:
             self.move(1, 0, game_map)
+        
+        elif keypress.vk == tcod.KEY_CHAR:
+            if keypress.c == ord('z') and game_map.map[self._x][self._y].stair[UP]:
+                game_map.change_level(game_map.active_level + 1)
+            if keypress.c == ord('x') and game_map.map[self._x][self._y].stair[DOWN]:
+                game_map.change_level(game_map.active_level - 1)
 

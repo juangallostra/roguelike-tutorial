@@ -5,6 +5,8 @@ C_DARK_WALL = tcod.Color(0, 0, 100)
 C_DARK_GROUND = tcod.Color(50, 50, 150)
 C_STAIR = tcod.Color(124, 52, 37)
 
+UP = 'up'
+DOWN = 'down'
 
 class RenderScreen():
     def __init__(self, width, height):
@@ -72,7 +74,7 @@ class RenderScreen():
                             game_map.map[x][y].get_char(),
                             tcod.BKGND_NONE
                         )
-                    if game_map.map[x][y].is_stair:
+                    if game_map.map[x][y].stair[UP] or game_map.map[x][y].stair[DOWN]:
                         tcod.console_set_char_background(
                             self._con,
                             x,
