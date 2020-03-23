@@ -14,7 +14,7 @@ DOWN = 'down'
 
 FOV_ALGO = 0
 FOV_LIGHT_WALLS = True
-TORCH_RADIUS = 10
+TORCH_RADIUS = 5
 
 class RenderScreen():
     def __init__(self, width, height):

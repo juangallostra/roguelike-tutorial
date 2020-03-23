@@ -60,27 +60,18 @@ class GameMap():
 
         # Forces FOV recalculation
         self.fov_recompute = False
-        self.fov_maps = {
-            i: tcod.map_new(self._width, self._height) for i in range(N_LEVELS)
-        }
-        for level in range(self._levels):
-            for y in range(self._height):
-                for x in range(self._width):
-                    tcod.map_set_properties(
-                        self.fov_maps[level],
-                        x,
-                        y,
-                        not self.full_map[level][x][y].block_sight,
-                        not self.full_map[level][x][y].blocked
-                    )
-        self.map = self.full_map[self.active_level]
-        self.fov_map = self.fov_maps[self.active_level]
+        # FOV maps have to be generated after dungeon generation
+        # because if they are created before all tiles are blocked
+        # the FOV algorithm doesn't work as expected
+        self.fov_maps = None
+        self.fov_map = None 
 
-    def change_level(self, target_level):
+    def change_level(self, target_level, only_tile_map=False):
         if 0 <= target_level < self._levels:
             self.active_level = target_level
             self.map = self.full_map[self.active_level]
-            self.fov_map = self.fov_maps[self.active_level]
+            if not only_tile_map:
+                self.fov_map = self.fov_maps[self.active_level]
 
     def get_width(self):
         return self._width
@@ -122,7 +113,7 @@ class GameMap():
     def generate_map(self):
         for level in range(self._levels):
             # Activate that level
-            self.change_level(level)
+            self.change_level(level, only_tile_map=True)
             # Create a random dungeon
             rooms = []
             num_rooms = 0
@@ -175,4 +166,19 @@ class GameMap():
                     rooms.append(new_room)
                     num_rooms += 1
         self.add_stairs()
+
+        self.fov_maps = {
+            i: tcod.map_new(self._width, self._height) for i in range(N_LEVELS)
+        }
+        for level in range(self._levels):
+            for y in range(self._height):
+                for x in range(self._width):
+                    tcod.map_set_properties(
+                        self.fov_maps[level],
+                        x,
+                        y,
+                        not self.full_map[level][x][y].block_sight,
+                        not self.full_map[level][x][y].blocked
+                    )
+
         self.change_level(0)

@@ -29,7 +29,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
-- [ ] Increase field of view.
 - [ ] Document code.
 - [ ] Only show objects that are in the current level.
 - [x] Add stairs to move between dungeon levels.
+- [x] Fix field of view.
