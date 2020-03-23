@@ -24,6 +24,7 @@ class RenderScreen():
         self._height = height
 
     def draw(self, element, game_map):
+        # only draw objects that are in the Field of View
         if tcod.map_is_in_fov(
             game_map.fov_map,
             element.get_x_position(),
@@ -64,8 +65,7 @@ class RenderScreen():
         if game_map.fov_recompute:
             #recompute FOV if needed (the player moved or something)
             game_map.fov_recompute = False
-            tcod.map_compute_fov(
-                game_map.fov_map,
+            game_map.fov_map.compute_fov(
                 player.get_x_position(),
                 player.get_y_position(),
                 TORCH_RADIUS,

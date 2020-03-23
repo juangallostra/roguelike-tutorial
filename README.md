@@ -4,7 +4,7 @@ So, after a week of confinement due to COVID-19, I have decided to follow the Py
 
 ## Development status
 
-I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_4).
+I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_5).
 
 
 #### 22/03/2020
@@ -15,6 +15,8 @@ I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelik
 * [Part 3](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_3)
 
 #### 23/03/2020
+
+* [Part 4](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_4)
 
 ## List of modifications
 
@@ -27,4 +29,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
+- [ ] Increase field of view.
+- [ ] Document code.
+- [ ] Only show objects that are in the current level.
 - [x] Add stairs to move between dungeon levels.
