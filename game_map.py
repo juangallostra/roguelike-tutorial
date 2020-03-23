@@ -56,12 +56,30 @@ class GameMap():
         self.full_map = {
             i: [[Tile(True) for y in range(height)] for x in range(width)] for i in range(N_LEVELS)
         }
+
+        # Forces FOV recalculation
+        self.fov_recompute = False
+        self.fov_maps = {
+            i: tcod.map_new(self._width, self._height) for i in range(N_LEVELS)
+        }
+        for level in range(self._levels):
+            for y in range(self._height):
+                for x in range(self._width):
+                    tcod.map_set_properties(
+                        self.fov_maps[level],
+                        x,
+                        y,
+                        not self.full_map[level][x][y].block_sight,
+                        not self.full_map[level][x][y].blocked
+                    )
         self.map = self.full_map[self.active_level]
+        self.fov_map = self.fov_maps[self.active_level]
 
     def change_level(self, target_level):
         if 0 <= target_level < self._levels:
             self.active_level = target_level
             self.map = self.full_map[self.active_level]
+            self.fov_map = self.fov_maps[self.active_level]
 
     def get_width(self):
         return self._width
