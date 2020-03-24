@@ -4,10 +4,12 @@ UP = 'up'
 DOWN = 'down'
 
 class BaseObject():
-    def __init__(self, x, y, char, color = tcod.white):
+    def __init__(self, x, y, char, name, color = tcod.white, blocks=False):
+        self.name = name
         self._char = char
         self._x = x
         self._y = y
+        self._blocks = blocks
         self._color = color
 
     def get_color(self):
