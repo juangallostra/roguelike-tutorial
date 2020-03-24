@@ -1,4 +1,5 @@
 import libtcodpy as tcod
+from player import BaseObject
 
 ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
@@ -7,6 +8,8 @@ N_LEVELS = 3
 
 UP = 'up'
 DOWN = 'down'
+
+MAX_ROOM_MONSTERS = 3
 
 class Tile():
     # A tile of the map and its properties
@@ -59,6 +62,10 @@ class GameMap():
             i: [[Tile(True) for y in range(height)] for x in range(width)] for i in range(N_LEVELS)
         }
 
+        # Create an empty list of objects per level
+        self.level_objects = None
+        self.map_objects = [[] for i in range(self._levels)]
+
         # Forces FOV recalculation
         self.fov_recompute = True # light the initial position of the player
         # FOV maps have to be generated after dungeon generation
@@ -74,12 +81,31 @@ class GameMap():
             self.map = self.full_map[self.active_level]
             if not only_tile_map:
                 self.fov_map = self.fov_maps[self.active_level]
+                self.level_objects = self.map_objects[self.active_level]
 
     def get_width(self):
         return self._width
 
     def get_height(self):
         return self._height
+
+    def place_objects_in_room(self, level, room):
+        # choose random number of monsters
+        num_monsters = tcod.random_get_int(0, 0, MAX_ROOM_MONSTERS)
+ 
+        for i in range(num_monsters):
+            #choose random spot for this monster
+            x = tcod.random_get_int(0, room.x1 + 1, room.x2 - 1)
+            y = tcod.random_get_int(0, room.y1 + 1, room.y2 - 1)
+ 
+            if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
+                #create an orc
+                monster = BaseObject(x, y, 'O', tcod.desaturated_green)
+            else:
+                #create a troll
+                monster = BaseObject(x, y, 'T', tcod.darker_green)
+            # Append it to the list ob level objects
+            self.map_objects[level].append(monster)
 
     def create_room(self, rect):
         # create a room
@@ -169,6 +195,8 @@ class GameMap():
                             self.create_tunnel(prev_y, new_y, prev_x, horizontal=False)
                             self.create_tunnel(prev_x, new_x, new_y, horizontal=True)
  
+                    # generate room monsters
+                    self.place_objects_in_room(level, new_room)
                     # finally, append the new room to the list
                     rooms.append(new_room)
                     num_rooms += 1

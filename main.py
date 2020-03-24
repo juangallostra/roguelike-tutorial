@@ -25,10 +25,9 @@ def main(turn_based):
     player_pos = game_map.player_initial_pos
     # instantiate player
     player = MainPlayer(player_pos[0], player_pos[1], '@')
-    npc = BaseObject(SCREEN_WIDTH // 2 - 5, SCREEN_HEIGHT // 2, '@', tcod.yellow)
-    objects = [player, npc]
     # Game loop
     while not tcod.console_is_window_closed():
+        objects = game_map.level_objects + [player]
         key = get_key_event(turn_based)
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
