@@ -32,12 +32,17 @@ def main(turn_based):
     while not tcod.console_is_window_closed():
         objects = game_map.level_objects + [player]
         key = get_key_event(turn_based)
+        player_action = player.handle_keys(game_map, game_state, key)
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
         elif key.vk == tcod.KEY_ESCAPE:
-            return True  # exit game
-        player.handle_keys(game_map, key)
+            break  # exit game
+        # let monsters take their turn
+        if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
+            for o in objects:
+                if o != player:
+                    print('The ' + o.name + ' growls!')
         renderer.render_all(objects, game_map, show_map_chars=False)
 
 if __name__ == "__main__":
