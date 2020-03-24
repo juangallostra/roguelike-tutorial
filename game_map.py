@@ -22,6 +22,7 @@ class Tile():
         self.block_sight = block_sight
     
     def get_char(self):
+        # Get character representing the object
         if self.blocked: return '#'
         if self.stair[UP]: return '>'
         if self.stair[DOWN]: return '<'
@@ -67,6 +68,7 @@ class GameMap():
         self.fov_map = None 
 
     def change_level(self, target_level, only_tile_map=False):
+        # Change current dungeon level
         if 0 <= target_level < self._levels:
             self.active_level = target_level
             self.map = self.full_map[self.active_level]
@@ -111,6 +113,11 @@ class GameMap():
                     valid_stair = True
 
     def generate_map(self):
+        # Generate the dungeon map
+        # 1. Rooms
+        # 2. Tunnels
+        # 3. Stairs
+        # 4. FOV map (so that we can know which tiles let the light pass through)
         for level in range(self._levels):
             # Activate that level
             self.change_level(level, only_tile_map=True)
@@ -165,6 +172,7 @@ class GameMap():
                     # finally, append the new room to the list
                     rooms.append(new_room)
                     num_rooms += 1
+
         self.add_stairs()
 
         self.fov_maps = {

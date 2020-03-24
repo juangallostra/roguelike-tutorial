@@ -63,7 +63,7 @@ class RenderScreen():
         tcod.console_set_default_foreground(self._con, tcod.white)
         
         if game_map.fov_recompute:
-            #recompute FOV if needed (the player moved or something)
+            # recompute FOV if needed (the player moved or something)
             game_map.fov_recompute = False
             game_map.fov_map.compute_fov(
                 player.get_x_position(),
@@ -86,6 +86,7 @@ class RenderScreen():
                         tcod.BKGND_NONE
                     )
                 if not visible:
+                    # Set tile to black if it is not visible
                     tcod.console_set_char_background(
                         self._con,
                         x,
@@ -93,6 +94,7 @@ class RenderScreen():
                         C_BLACK,
                         tcod.BKGND_SET
                     )
+                    # However, if it has been explored set it to a dark colour
                     if game_map.map[x][y].explored:
                         if wall:
                             tcod.console_set_char_background(
@@ -120,7 +122,8 @@ class RenderScreen():
                                     tcod.BKGND_SET
                                 )
                 else:
-                    #it's visible
+                    # if the tile is visible because it lies in the FOV,
+                    #  then paint it light
                     if wall:
                         tcod.console_set_char_background(self._con, x, y, C_LIGHT_WALL, tcod.BKGND_SET)
                     else:

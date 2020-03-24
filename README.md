@@ -18,6 +18,8 @@ I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelik
 
 * [Part 4](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_4)
 
+#### 24/03/2020
+
 ## List of modifications
 
 Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
@@ -32,6 +34,6 @@ Below you can find a list of things that I have done, up to he point were I am c
 - [ ] Document code.
 - [ ] Only show objects that are in the current level.
 - [ ] Change color palette.
-- [ ] Add option to play with alphanumeric charss instead of colours.
+- [ ] Add option to play with alphanumeric chars instead of colours.
 - [x] Add stairs to move between dungeon levels.
 - [x] Fix field of view.
