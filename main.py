@@ -42,7 +42,8 @@ def main(turn_based):
         if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
             for o in objects:
                 if o != player:
-                    print('The ' + o.name + ' growls!')
+                    pass
+                    #print('The ' + o.name + ' growls!')
         renderer.render_all(objects, game_map, show_map_chars=False)
 
 if __name__ == "__main__":
