@@ -7,3 +7,5 @@ MAP_HEIGHT = 45
 
 WINDOW_TITLE = 'Python 3 libtcod tutorial'
 FULLSCREEN = False
+
+PLAYING = 'playing'

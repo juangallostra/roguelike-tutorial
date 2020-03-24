@@ -1,6 +1,6 @@
 import libtcodpy as tcod
 
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, LIMIT_FPS, WINDOW_TITLE, FULLSCREEN, MAP_WIDTH, MAP_HEIGHT
+from constants import *
 from entities import MainPlayer, BaseObject
 from renderer import RenderScreen
 from game_map import GameMap
@@ -25,6 +25,9 @@ def main(turn_based):
     player_pos = game_map.player_initial_pos
     # instantiate player
     player = MainPlayer(player_pos[0], player_pos[1], '@', 'player', tcod.white, blocks=True)
+    # Game state and player's last action
+    game_state = PLAYING
+    player_action = None
     # Game loop
     while not tcod.console_is_window_closed():
         objects = game_map.level_objects + [player]
