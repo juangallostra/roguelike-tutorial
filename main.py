@@ -1,7 +1,7 @@
 import libtcodpy as tcod
 
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH, LIMIT_FPS, WINDOW_TITLE, FULLSCREEN, MAP_WIDTH, MAP_HEIGHT
-from player import MainPlayer, BaseObject
+from entities import MainPlayer, BaseObject
 from renderer import RenderScreen
 from game_map import GameMap
 

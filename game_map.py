@@ -1,5 +1,5 @@
 import libtcodpy as tcod
-from player import BaseObject
+from entities import BaseObject
 
 ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
@@ -82,6 +82,16 @@ class GameMap():
             if not only_tile_map:
                 self.fov_map = self.fov_maps[self.active_level]
                 self.level_objects = self.map_objects[self.active_level]
+
+    def is_blocked(self, x, y):
+        # first test the map tile
+        if self.map[x][y].blocked:
+            return True
+        #now check for any blocking objects
+        for element in self.level_objects:
+            if element.blocks and element.get_x_position() == x and element.get_y_position() == y:
+                return True
+        return False
 
     def get_width(self):
         return self._width
