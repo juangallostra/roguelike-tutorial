@@ -113,10 +113,12 @@ class GameMap():
             if not self.is_blocked(x, y, self.map_objects[level]):
                 if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
                     #create an orc
-                    monster = BaseObject(x, y, 'O', 'orc', tcod.desaturated_green, blocks=True)
+                    # monster = BaseObject(x, y, 'O', 'orc', tcod.desaturated_green, blocks=True)
+                    monster = BaseObject(x, y, 'A', 'orc', tcod.white, blocks=True)
                 else:
                     #create a troll
-                    monster = BaseObject(x, y, 'T', 'troll', tcod.darker_green, blocks=True)
+                    # monster = BaseObject(x, y, 'T', 'troll', tcod.darker_green, blocks=True)
+                    monster = BaseObject(x, y, 'a', 'troll', tcod.white, blocks=True)
                 # Append it to the list ob level objects
                 self.map_objects[level].append(monster)
 
