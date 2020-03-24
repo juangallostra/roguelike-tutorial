@@ -24,7 +24,7 @@ def main(turn_based):
     game_map.generate_map()
     player_pos = game_map.player_initial_pos
     # instantiate player
-    player = MainPlayer(player_pos[0], player_pos[1], '@')
+    player = MainPlayer(player_pos[0], player_pos[1], '@', 'player', tcod.white, blocks=True)
     # Game loop
     while not tcod.console_is_window_closed():
         objects = game_map.level_objects + [player]

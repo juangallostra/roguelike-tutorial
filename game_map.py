@@ -83,12 +83,15 @@ class GameMap():
                 self.fov_map = self.fov_maps[self.active_level]
                 self.level_objects = self.map_objects[self.active_level]
 
-    def is_blocked(self, x, y):
+    def is_blocked(self, x, y, to_check_against=None):
+        to_check = self.level_objects
+        if to_check_against is not None:
+            to_check = to_check_against
         # first test the map tile
         if self.map[x][y].blocked:
             return True
         #now check for any blocking objects
-        for element in self.level_objects:
+        for element in to_check:
             if element.blocks and element.get_x_position() == x and element.get_y_position() == y:
                 return True
         return False
@@ -107,15 +110,15 @@ class GameMap():
             #choose random spot for this monster
             x = tcod.random_get_int(0, room.x1 + 1, room.x2 - 1)
             y = tcod.random_get_int(0, room.y1 + 1, room.y2 - 1)
- 
-            if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
-                #create an orc
-                monster = BaseObject(x, y, 'O', tcod.desaturated_green)
-            else:
-                #create a troll
-                monster = BaseObject(x, y, 'T', tcod.darker_green)
-            # Append it to the list ob level objects
-            self.map_objects[level].append(monster)
+            if not self.is_blocked(x, y, self.map_objects[level]):
+                if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
+                    #create an orc
+                    monster = BaseObject(x, y, 'O', 'orc', tcod.desaturated_green, blocks=True)
+                else:
+                    #create a troll
+                    monster = BaseObject(x, y, 'T', 'troll', tcod.darker_green, blocks=True)
+                # Append it to the list ob level objects
+                self.map_objects[level].append(monster)
 
     def create_room(self, rect):
         # create a room
