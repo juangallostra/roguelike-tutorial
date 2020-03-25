@@ -102,7 +102,7 @@ class BasicMonster():
  
             # close enough, attack! (if the player is still alive.)
             elif player.fighter.hp > 0:
-                print('The attack of the ' + monster.name + ' bounces off your shiny metal armor!')
+                monster.fighter.attack(player)
 
 
 class MainPlayer(BaseObject):
@@ -157,7 +157,7 @@ class MainPlayer(BaseObject):
  
         #attack if target found, move otherwise
         if target is not None:
-            print('The ' + target.name + ' laughs at your puny efforts to attack him!')
+            self.fighter.attack(target)
         else:
             self.move(dx, dy, game_map)
             game_map.fov_recompute = True

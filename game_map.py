@@ -116,13 +116,14 @@ class GameMap():
                     # create an orc
                     fighter_component = Fighter(hp=10, defense=0, power=3)
                     ai_component = BasicMonster()
-                    # monster = BaseObject(x, y, 'O', 'orc', tcod.desaturated_green, blocks=True)
                     monster = BaseObject(
                         x,
                         y,
-                        ORC_TILE,
+                        # ORC_TILE,
+                        'O',
                         'orc',
-                        tcod.white,
+                        # tcod.white,
+                        tcod.desaturated_green,
                         blocks=True,
                         fighter=fighter_component,
                         ai=ai_component)
@@ -130,13 +131,14 @@ class GameMap():
                     # create a troll
                     fighter_component = Fighter(hp=16, defense=1, power=4)
                     ai_component = BasicMonster()
-                    # monster = BaseObject(x, y, 'T', 'troll', tcod.darker_green, blocks=True)
                     monster = BaseObject(
                         x,
                         y,
-                        TROLL_TILE,
+                        # TROLL_TILE,
+                        'T',
                         'troll',
-                        tcod.white,
+                        # tcod.white,
+                        tcod.darker_green,
                         blocks=True,
                         fighter=fighter_component,
                         ai=ai_component)

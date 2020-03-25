@@ -43,7 +43,8 @@ class RenderScreen():
     def clear(self, element):
         # erase the character that represents this object
         tcod.console_put_char(
-            self._con,element.get_x_position(),
+            self._con,
+            element.get_x_position(),
             element.get_y_position(),
             ' ',
             tcod.BKGND_NONE
@@ -147,3 +148,7 @@ class RenderScreen():
         tcod.console_blit(self._con, 0, 0, self._width, self._height, 0, 0, 0)
         tcod.console_flush()
         self.clear_objects(objects)
+        # show the player's stats
+        tcod.console_set_default_foreground(self._con, tcod.white)
+        tcod.console_print_ex(self._con, 1, self._height - 2, tcod.BKGND_NONE, tcod.LEFT,
+        'HP: ' + str(player.fighter.hp) + '/' + str(player.fighter.max_hp))

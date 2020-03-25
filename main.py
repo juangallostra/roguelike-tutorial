@@ -6,9 +6,8 @@ from renderer import RenderScreen
 from game_map import GameMap
 from tile_loader import *
 
-# FONT_PATH = 'arial10x10.png'
-# FONT_PATH = 'tiles10x10.png'
-# FONT_FLAGS = tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD
+FONT_PATH = 'arial10x10.png'
+FONT_FLAGS = tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD
 
 def get_key_event(turn_based=None):
     if turn_based:
@@ -23,7 +22,7 @@ def main(turn_based):
     renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
     
     # Load custom tileset
-    load_custom_font()
+    # load_custom_font()
     
     # Game map
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
@@ -31,12 +30,12 @@ def main(turn_based):
     player_pos = game_map.player_initial_pos
     
     # instantiate player
-    # player = MainPlayer(player_pos[0], player_pos[1], '@', 'player', tcod.white, blocks=True)
     fighter_component = Fighter(hp=30, defense=2, power=5)
     player = MainPlayer(
         player_pos[0],
         player_pos[1],
-        PLAYER_TILE,
+        # PLAYER_TILE,
+        '@',
         'player',
         tcod.white,
         blocks=True,
@@ -65,7 +64,7 @@ def main(turn_based):
 if __name__ == "__main__":
     # Game config
     turn_based = False
-    # tcod.console_set_custom_font(FONT_PATH, FONT_FLAGS)
+    tcod.console_set_custom_font(FONT_PATH, FONT_FLAGS)
     tcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE, FULLSCREEN)
     tcod.sys_set_fps(LIMIT_FPS)
     main(turn_based)

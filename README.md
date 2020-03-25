@@ -36,6 +36,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
+- [ ] Check if `libtcod` can load both a font and a tileset. 
 - [ ] Create a tileset loader that handles all the required operations. (retro/no retro, only chars/with colors, etc.)
 - [ ] Document code.
 - [ ] Change color palette.
