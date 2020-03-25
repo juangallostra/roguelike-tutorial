@@ -1,5 +1,6 @@
 import libtcodpy as tcod
 from constants import PLAYING, DIDNT_TAKE_TURN
+import math
 
 UP = 'up'
 DOWN = 'down'
@@ -36,6 +37,12 @@ class BaseObject():
 
     def get_y_position(self):
         return self._y
+    
+    def distance_to(self, other):
+        # return the distance to another object
+        dx = other.get_x_position() - self._x
+        dy = other.get_y_position() - self._y
+        return math.sqrt(dx ** 2 + dy ** 2)
 
     def move(self, dx, dy, game_map):
         if not game_map.is_blocked(self._x + dx, self._y + dy):
@@ -56,8 +63,29 @@ class Fighter():
 
 class BasicMonster():
     # AI for a basic monster.
-    def take_turn(self):
-        print('The ' + self.owner.name + ' growls!')
+    def move_towards(self, target_x, target_y, game_map):
+        # vector from this object to the target, and distance
+        dx = target_x - self.owner.get_x_position()
+        dy = target_y - self.owner.get_y_position()
+        distance = math.sqrt(dx ** 2 + dy ** 2)
+ 
+        # normalize it to length 1 (preserving direction), then round it and
+        # convert to integer so the movement is restricted to the map grid
+        dx = int(dx // distance)
+        dy = int(dy // distance)
+        self.owner.move(dx, dy, game_map)
+
+    def take_turn(self, game_map, player):
+        # a basic monster takes its turn. If you can see it, it can see you
+        monster = self.owner
+        if tcod.map_is_in_fov(game_map.fov_map, monster.get_x_position(), monster.get_y_position()):
+            # move towards player if far away
+            if monster.distance_to(player) >= 2:
+                self.move_towards(player.get_x_position(), player.get_y_position(), game_map)
+ 
+            # close enough, attack! (if the player is still alive.)
+            elif player.fighter.hp > 0:
+                print('The attack of the ' + monster.name + ' bounces off your shiny metal armor!')
 
 class MainPlayer(BaseObject):
     def __init__(self, x, y, char, name, color=tcod.white, blocks=True, fighter=None, ai=None):

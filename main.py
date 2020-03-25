@@ -55,12 +55,11 @@ def main(turn_based):
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
         elif key.vk == tcod.KEY_ESCAPE:
             break  # exit game
-        # let monsters take their turn
+        # let monsters take their turn if the player did
         if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
             for o in objects:
                 if o != player:
-                    pass
-                    #print('The ' + o.name + ' growls!')
+                    o.ai.take_turn(game_map, player)
         renderer.render_all(objects, game_map, show_map_chars=False)
 
 if __name__ == "__main__":
