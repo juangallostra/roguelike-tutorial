@@ -43,7 +43,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 - [ ] Create a tileset loader that handles all the required operations. (retro/no retro, only chars/with colors, etc.)
 - [ ] Document code.
 - [ ] Change color palette.
-- [ ] Add option to play with alphanumeric chars instead of colours/tilesets.
+- [ ] Add option to play with alphanumeric chars instead of colors/tilesets.
 - [x] Investigate how to use custom tilesets
 - [x] Add stairs to move between dungeon levels.
 - [x] Fix field of view.
