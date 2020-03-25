@@ -4,7 +4,7 @@ So, after a week of confinement due to COVID-19, I have decided to follow the Py
 
 ## Development status
 
-I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_6).
+I'm currently on [Part 7](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_7).
 
 
 #### 22/03/2020
@@ -23,6 +23,8 @@ I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelik
 * [Part 5](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_5)
 
 #### 25/03/2020
+
+* [Part 6](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_6)
 
 ## List of modifications
 
