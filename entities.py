@@ -60,6 +60,23 @@ class Fighter():
         self.hp = hp
         self.defense = defense
         self.power = power
+    
+    def take_damage(self, damage):
+        # apply damage if possible
+        if damage > 0:
+            self.hp -= damage
+    
+    def attack(self, target):
+        # a simple formula for attack damage
+        damage = self.power - target.fighter.defense
+ 
+        if damage > 0:
+            # make the target take some damage
+            print(self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.')
+            target.fighter.take_damage(damage)
+        else:
+            print(self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!')
+
 
 class BasicMonster():
     # AI for a basic monster.
@@ -86,6 +103,7 @@ class BasicMonster():
             # close enough, attack! (if the player is still alive.)
             elif player.fighter.hp > 0:
                 print('The attack of the ' + monster.name + ' bounces off your shiny metal armor!')
+
 
 class MainPlayer(BaseObject):
     def __init__(self, x, y, char, name, color=tcod.white, blocks=True, fighter=None, ai=None):
@@ -143,4 +161,3 @@ class MainPlayer(BaseObject):
         else:
             self.move(dx, dy, game_map)
             game_map.fov_recompute = True
-
