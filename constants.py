@@ -9,4 +9,5 @@ WINDOW_TITLE = 'Python 3 libtcod tutorial'
 FULLSCREEN = False
 
 PLAYING = 'playing'
+DEAD = 'dead'
 DIDNT_TAKE_TURN = 'didnt_take_turn'

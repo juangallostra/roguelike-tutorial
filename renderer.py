@@ -150,5 +150,6 @@ class RenderScreen():
         self.clear_objects(objects)
         # show the player's stats
         tcod.console_set_default_foreground(self._con, tcod.white)
+        player_hp = str(player.fighter.hp) if player.fighter.hp >= 10 else '0' + str(player.fighter.hp)
         tcod.console_print_ex(self._con, 1, self._height - 2, tcod.BKGND_NONE, tcod.LEFT,
-        'HP: ' + str(player.fighter.hp) + '/' + str(player.fighter.max_hp))
+        'HP: ' + player_hp + '/' + str(player.fighter.max_hp))

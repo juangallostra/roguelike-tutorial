@@ -114,7 +114,7 @@ class GameMap():
             if not self.is_blocked(x, y, self.map_objects[level]):
                 if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
                     # create an orc
-                    fighter_component = Fighter(hp=10, defense=0, power=3)
+                    fighter_component = Fighter(hp=10, defense=0, power=3, death_function=monster_death)
                     ai_component = BasicMonster()
                     monster = BaseObject(
                         x,
@@ -129,7 +129,7 @@ class GameMap():
                         ai=ai_component)
                 else:
                     # create a troll
-                    fighter_component = Fighter(hp=16, defense=1, power=4)
+                    fighter_component = Fighter(hp=16, defense=1, power=4, death_function=monster_death)
                     ai_component = BasicMonster()
                     monster = BaseObject(
                         x,

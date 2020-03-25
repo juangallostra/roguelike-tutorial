@@ -1,5 +1,5 @@
 import libtcodpy as tcod
-from constants import PLAYING, DIDNT_TAKE_TURN
+from constants import PLAYING, DEAD, DIDNT_TAKE_TURN
 import math
 
 UP = 'up'
@@ -26,8 +26,14 @@ class BaseObject():
     def get_color(self):
         return self._color
 
+    def set_color(self, new_color):
+        self._color = new_color 
+
     def get_char(self):
         return self._char
+    
+    def set_char(self, new_char):
+        self._char = new_char
 
     def get_position(self):
         return self._x, self._y
@@ -55,16 +61,21 @@ class BaseObject():
 
 class Fighter():
     # Combat-related properties and methods (monster, player, NPC).
-    def __init__(self, hp, defense, power):
+    def __init__(self, hp, defense, power, death_function=None):
         self.max_hp = hp
         self.hp = hp
         self.defense = defense
         self.power = power
+        self.death_function = death_function
     
     def take_damage(self, damage):
         # apply damage if possible
         if damage > 0:
             self.hp -= damage
+        #check for death. if there's a death function, call it
+        if self.hp <= 0:
+            if self.death_function is not None:
+                self.death_function(self.owner)
     
     def attack(self, target):
         # a simple formula for attack damage
@@ -108,6 +119,7 @@ class BasicMonster():
 class MainPlayer(BaseObject):
     def __init__(self, x, y, char, name, color=tcod.white, blocks=True, fighter=None, ai=None):
         super().__init__(x, y, char, name, color, blocks, fighter, ai)
+        self.state = PLAYING
     
     def is_player(self):
         return True
@@ -144,20 +156,43 @@ class MainPlayer(BaseObject):
         return DIDNT_TAKE_TURN
 
     def move_or_attack(self, dx, dy, game_map):
-        #the coordinates the player is moving to/attacking
+        # the coordinates the player is moving to/attacking
         x = self.get_x_position() + dx
         y = self.get_y_position() + dy
  
-        #try to find an attackable object there
+        # try to find an attackable object there
         target = None
         for o in game_map.level_objects:
-            if o.get_x_position() == x and o.get_y_position() == y:
+            if o.fighter and o.get_x_position() == x and o.get_y_position() == y:
                 target = o
                 break
  
-        #attack if target found, move otherwise
+        # attack if target found, move otherwise
         if target is not None:
             self.fighter.attack(target)
         else:
             self.move(dx, dy, game_map)
             game_map.fov_recompute = True
+
+# death functions
+def player_death(player):
+    # the game ended!
+    print('You died!')
+    player.state = DEAD
+ 
+    # for added effect, transform the player into a corpse!
+    player.set_char('%')
+    player.set_color(tcod.dark_red)
+ 
+def monster_death(monster):
+    # transform it into a nasty corpse! it doesn't block, can't be
+    # attacked and doesn't move
+    print(monster.name.capitalize() + ' is dead!')
+
+    monster.set_char('%')
+    monster.set_color(tcod.dark_red)
+    
+    monster.blocks = False
+    monster.fighter = None
+    monster.ai = None
+    monster.name = 'remains of ' + monster.name

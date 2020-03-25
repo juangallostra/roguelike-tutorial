@@ -30,7 +30,7 @@ def main(turn_based):
     player_pos = game_map.player_initial_pos
     
     # instantiate player
-    fighter_component = Fighter(hp=30, defense=2, power=5)
+    fighter_component = Fighter(hp=30, defense=2, power=5, death_function=player_death)
     player = MainPlayer(
         player_pos[0],
         player_pos[1],
@@ -57,8 +57,10 @@ def main(turn_based):
         # let monsters take their turn if the player did
         if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
             for o in objects:
-                if o != player:
+                if o != player and o.ai:
                     o.ai.take_turn(game_map, player)
+        # Update game state with player death
+        game_state = player.state
         renderer.render_all(objects, game_map, show_map_chars=False)
 
 if __name__ == "__main__":
