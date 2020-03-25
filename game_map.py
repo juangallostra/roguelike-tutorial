@@ -1,5 +1,6 @@
 import libtcodpy as tcod
 from entities import BaseObject
+from tile_loader import ORC_TILE, TROLL_TILE
 
 ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
@@ -107,18 +108,18 @@ class GameMap():
         num_monsters = tcod.random_get_int(0, 0, MAX_ROOM_MONSTERS)
  
         for i in range(num_monsters):
-            #choose random spot for this monster
+            # choose random spot for this monster
             x = tcod.random_get_int(0, room.x1 + 1, room.x2 - 1)
             y = tcod.random_get_int(0, room.y1 + 1, room.y2 - 1)
             if not self.is_blocked(x, y, self.map_objects[level]):
                 if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
-                    #create an orc
+                    # create an orc
                     # monster = BaseObject(x, y, 'O', 'orc', tcod.desaturated_green, blocks=True)
-                    monster = BaseObject(x, y, 'A', 'orc', tcod.white, blocks=True)
+                    monster = BaseObject(x, y, ORC_TILE, 'orc', tcod.white, blocks=True)
                 else:
-                    #create a troll
+                    # create a troll
                     # monster = BaseObject(x, y, 'T', 'troll', tcod.darker_green, blocks=True)
-                    monster = BaseObject(x, y, 'a', 'troll', tcod.white, blocks=True)
+                    monster = BaseObject(x, y, TROLL_TILE, 'troll', tcod.white, blocks=True)
                 # Append it to the list ob level objects
                 self.map_objects[level].append(monster)
 
@@ -217,7 +218,8 @@ class GameMap():
                     num_rooms += 1
 
         self.add_stairs()
-
+        # Now that we know which tiles are blocked, generate FOV maps
+        # for each level
         self.fov_maps = {
             i: tcod.map_new(self._width, self._height) for i in range(N_LEVELS)
         }

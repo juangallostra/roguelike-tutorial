@@ -22,6 +22,8 @@ I'm currently [here](http://www.roguebasin.com/index.php?title=Complete_Roguelik
 
 * [Part 5](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_5)
 
+#### 25/03/2020
+
 ## List of modifications
 
 Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
@@ -30,13 +32,14 @@ Below you can find a list of things that I have done, up to he point were I am c
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
 - The game map is a class instead of a list of lists.
 - The dungeon has more than one level (it enables having `N` levels). Change level by using `z` to go up and `x` to go down when on a stair tile.
+- Enable loading custom tilesets. This is covered in the extras section.
 
 ## TODO List
 
-- [ ] Investigate how to use bigger tilesets
+- [ ] Investigate how to use custom tilesets
 - [ ] Document code.
 - [ ] Change color palette.
-- [ ] Add option to play with alphanumeric chars instead of colours.
+- [ ] Add option to play with alphanumeric chars instead of colours/tilesets.
 - [x] Add stairs to move between dungeon levels.
 - [x] Fix field of view.
 - [x] Only show objects that are in the current level.
