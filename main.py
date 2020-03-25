@@ -46,6 +46,12 @@ def main(turn_based):
     player_action = None
     # Game loop
     while not tcod.console_is_window_closed():
+        # sort objects in level to draw first corpses
+        game_map.level_objects = [
+            o for o in game_map.level_objects if o.fighter is None
+        ] + [
+            o for o in game_map.level_objects if o.fighter is not None
+        ]
         objects = game_map.level_objects + [player]
         key = get_key_event(turn_based)
         player_action = player.handle_keys(game_map, game_state, key)
