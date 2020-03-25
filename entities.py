@@ -6,13 +6,21 @@ DOWN = 'down'
 
 
 class BaseObject():
-    def __init__(self, x, y, char, name, color=tcod.white, blocks=False):
+    def __init__(self, x, y, char, name, color=tcod.white, blocks=False, fighter=None, ai=None):
         self.name = name
         self._char = char
         self._x = x
         self._y = y
         self.blocks = blocks
         self._color = color
+        # Add components
+        self.fighter = fighter
+        if self.fighter: # let the fighter component know who owns it 
+            self.fighter.owner = self
+
+        self.ai = ai
+        if self.ai:  # let the AI component know who owns it
+            self.ai.owner = self
 
     def get_color(self):
         return self._color
@@ -38,9 +46,22 @@ class BaseObject():
         return False
 
 
+class Fighter():
+    # Combat-related properties and methods (monster, player, NPC).
+    def __init__(self, hp, defense, power):
+        self.max_hp = hp
+        self.hp = hp
+        self.defense = defense
+        self.power = power
+
+class BasicMonster():
+    # AI for a basic monster.
+    def take_turn(self):
+        print('The ' + self.owner.name + ' growls!')
+
 class MainPlayer(BaseObject):
-    def __init__(self, x, y, char, name, color=tcod.white, blocks=True):
-        super().__init__(x, y, char, name, color, blocks)
+    def __init__(self, x, y, char, name, color=tcod.white, blocks=True, fighter=None, ai=None):
+        super().__init__(x, y, char, name, color, blocks, fighter, ai)
     
     def is_player(self):
         return True

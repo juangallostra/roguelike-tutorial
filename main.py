@@ -1,7 +1,7 @@
 import libtcodpy as tcod
 
 from constants import *
-from entities import MainPlayer, BaseObject
+from entities import *
 from renderer import RenderScreen
 from game_map import GameMap
 from tile_loader import *
@@ -32,7 +32,15 @@ def main(turn_based):
     
     # instantiate player
     # player = MainPlayer(player_pos[0], player_pos[1], '@', 'player', tcod.white, blocks=True)
-    player = MainPlayer(player_pos[0], player_pos[1], PLAYER_TILE, 'player', tcod.white, blocks=True)
+    fighter_component = Fighter(hp=30, defense=2, power=5)
+    player = MainPlayer(
+        player_pos[0],
+        player_pos[1],
+        PLAYER_TILE,
+        'player',
+        tcod.white,
+        blocks=True,
+        fighter=fighter_component)
     
     # Game state and player's last action
     game_state = PLAYING

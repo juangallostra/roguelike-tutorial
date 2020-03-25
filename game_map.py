@@ -1,5 +1,5 @@
 import libtcodpy as tcod
-from entities import BaseObject
+from entities import *
 from tile_loader import ORC_TILE, TROLL_TILE
 
 ROOM_MAX_SIZE = 10
@@ -114,12 +114,32 @@ class GameMap():
             if not self.is_blocked(x, y, self.map_objects[level]):
                 if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
                     # create an orc
+                    fighter_component = Fighter(hp=10, defense=0, power=3)
+                    ai_component = BasicMonster()
                     # monster = BaseObject(x, y, 'O', 'orc', tcod.desaturated_green, blocks=True)
-                    monster = BaseObject(x, y, ORC_TILE, 'orc', tcod.white, blocks=True)
+                    monster = BaseObject(
+                        x,
+                        y,
+                        ORC_TILE,
+                        'orc',
+                        tcod.white,
+                        blocks=True,
+                        fighter=fighter_component,
+                        ai=ai_component)
                 else:
                     # create a troll
+                    fighter_component = Fighter(hp=16, defense=1, power=4)
+                    ai_component = BasicMonster()
                     # monster = BaseObject(x, y, 'T', 'troll', tcod.darker_green, blocks=True)
-                    monster = BaseObject(x, y, TROLL_TILE, 'troll', tcod.white, blocks=True)
+                    monster = BaseObject(
+                        x,
+                        y,
+                        TROLL_TILE,
+                        'troll',
+                        tcod.white,
+                        blocks=True,
+                        fighter=fighter_component,
+                        ai=ai_component)
                 # Append it to the list ob level objects
                 self.map_objects[level].append(monster)
 
