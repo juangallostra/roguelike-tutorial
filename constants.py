@@ -1,13 +1,22 @@
+# general config
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 LIMIT_FPS = 20
-
-MAP_WIDTH = 80
-MAP_HEIGHT = 45
-
 WINDOW_TITLE = 'Python 3 libtcod tutorial'
 FULLSCREEN = False
 
+# map sizes
+MAP_WIDTH = 80
+MAP_HEIGHT = 43
+
+# sizes and coordinates relevant for the GUI
+BAR_WIDTH = 20
+PANEL_HEIGHT = 7
+PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
+
+# game states
 PLAYING = 'playing'
 DEAD = 'dead'
+
+# player actions
 DIDNT_TAKE_TURN = 'didnt_take_turn'

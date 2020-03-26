@@ -1,4 +1,5 @@
 import libtcodpy as tcod
+from constants import *
 
 # Colors
 C_DARK_WALL = tcod.Color(0, 0, 100)
@@ -17,11 +18,32 @@ FOV_LIGHT_WALLS = True
 TORCH_RADIUS = 5
 
 class RenderScreen():
-    def __init__(self, width, height):
+    def __init__(self, width, height, panel_height):
         # Auxiliary console
         self._con = tcod.console_new(width, height)
+        # GUI panel
+        self._panel = tcod.console_new(width, panel_height)
         self._width = width
         self._height = height
+        self._panel_height = panel_height
+
+    def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
+        # render a bar (HP, experience, etc). 
+        # first calculate the width of the bar
+        bar_width = int(float(value) / maximum * total_width)
+ 
+        # render the background first
+        tcod.console_set_default_background(self._panel, back_color)
+        tcod.console_rect(self._panel, x, y, total_width, 1, False, tcod.BKGND_SCREEN)
+ 
+        # now render the bar on top
+        tcod.console_set_default_background(self._panel, bar_color)
+        if bar_width > 0:
+            tcod.console_rect(self._panel, x, y, bar_width, 1, False, tcod.BKGND_SCREEN)
+        # finally, some centered text with the values
+        tcod.console_set_default_foreground(self._panel, tcod.white)
+        tcod.console_print_ex(self._panel, int(x + total_width / 2), y, tcod.BKGND_NONE, tcod.CENTER,
+            name + ': ' + str(value) + '/' + str(maximum))
 
     def draw(self, element, game_map):
         # only draw objects that are in the Field of View
@@ -146,10 +168,20 @@ class RenderScreen():
         self.render_map(game_map, player, show_chars=show_map_chars)
         self.render_objects(objects, game_map)
         tcod.console_blit(self._con, 0, 0, self._width, self._height, 0, 0, 0)
-        tcod.console_flush()
-        self.clear_objects(objects)
+
         # show the player's stats
         tcod.console_set_default_foreground(self._con, tcod.white)
-        player_hp = str(player.fighter.hp) if player.fighter.hp >= 10 else '0' + str(player.fighter.hp)
-        tcod.console_print_ex(self._con, 1, self._height - 2, tcod.BKGND_NONE, tcod.LEFT,
-        'HP: ' + player_hp + '/' + str(player.fighter.max_hp))
+
+        # prepare to render the GUI panel
+        tcod.console_set_default_background(self._panel, tcod.black)
+        tcod.console_clear(self._panel)
+ 
+        #show the player's stats
+        self.render_bar(1, 1, BAR_WIDTH, 'HP', player.fighter.hp, player.fighter.max_hp,
+            tcod.light_red, tcod.darker_red)
+ 
+        #blit the contents of "panel" to the root console
+        tcod.console_blit(self._panel, 0, 0, self._width, self._panel_height, 0, 0, PANEL_Y)
+
+        tcod.console_flush()
+        self.clear_objects(objects)

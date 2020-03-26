@@ -19,7 +19,7 @@ def get_key_event(turn_based=None):
     return key
 
 def main(turn_based):
-    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
+    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT, PANEL_HEIGHT)
     
     # Load custom tileset
     # load_custom_font()
