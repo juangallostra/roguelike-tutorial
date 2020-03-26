@@ -18,6 +18,21 @@ def get_key_event(turn_based=None):
         key = tcod.console_check_for_keypress()
     return key
 
+def get_names_under_mouse(mouse, game_map):
+    # return a string with the names of all objects under the mouse
+    (x, y) = (mouse.cx, mouse.cy)
+    # create a list with the names of all objects at the mouse's coordinates and in FOV
+    names = [
+        obj.name for obj in game_map.level_objects 
+        if obj.get_x_position() == x and obj.get_y_position() == y and tcod.map_is_in_fov(
+            game_map.fov_map, 
+            obj.get_x_position(), 
+            obj.get_y_position()
+        )
+    ]
+    names = ', '.join(names)  #join the names, separated by commas
+    return names.capitalize()
+
 def main(turn_based):
     # system wide message logger
     logger = Logger()
@@ -53,8 +68,15 @@ def main(turn_based):
         'Welcome stranger! Prepare to perish in the Tombs of the Ancient Kings.',
         tcod.red
     )
+    # Track mouse and keys
+    mouse = tcod.Mouse()
+    key = tcod.Key()
+    # Limit FPS
+    tcod.sys_set_fps(LIMIT_FPS)
     # Game loop
     while not tcod.console_is_window_closed():
+        # check for events
+        tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS | tcod.EVENT_MOUSE, key, mouse)
         # sort objects in level to draw first corpses
         game_map.level_objects = [
             o for o in game_map.level_objects if o.fighter is None
@@ -62,7 +84,7 @@ def main(turn_based):
             o for o in game_map.level_objects if o.fighter is not None
         ]
         objects = game_map.level_objects + [player]
-        key = get_key_event(turn_based)
+        # key = get_key_event(turn_based)
         player_action = player.handle_keys(game_map, game_state, key)
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
@@ -76,7 +98,8 @@ def main(turn_based):
                     o.ai.take_turn(game_map, player)
         # Update game state with player death
         game_state = player.state
-        renderer.render_all(objects, game_map, show_map_chars=False)
+        names_under_mouse = get_names_under_mouse(mouse, game_map)
+        renderer.render_all(objects, game_map, names_under_mouse, show_map_chars=False)
 
 if __name__ == "__main__":
     # Game config
