@@ -97,17 +97,17 @@ class Fighter():
         # a simple formula for attack damage
         damage = self.power - target.fighter.defense
  
-        msg = None
         if damage > 0:
+            # if owner has a logger log message
+            self.owner.logger.log_message(
+                self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.'
+            )
             # make the target take some damage
             target.fighter.take_damage(damage)
-            # if owner has a logger log message
-            msg = self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.'
         else:
-            msg = self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
-
-        if self.owner.logger and msg:
-                self.owner.logger.log_message(msg)
+            self.owner.logger.log_message(
+                self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
+            )
 
 
 class BasicMonster():
