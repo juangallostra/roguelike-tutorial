@@ -53,7 +53,9 @@ class Rect():
 
 
 class GameMap():
-    def __init__(self, width, height):
+    def __init__(self, width, height, logger=None):
+        self.logger = logger
+
         self._width = width
         self._height = height
         
@@ -126,7 +128,8 @@ class GameMap():
                         tcod.desaturated_green,
                         blocks=True,
                         fighter=fighter_component,
-                        ai=ai_component)
+                        ai=ai_component,
+                        logger=self.logger)
                 else:
                     # create a troll
                     fighter_component = Fighter(hp=16, defense=1, power=4, death_function=monster_death)
@@ -141,7 +144,8 @@ class GameMap():
                         tcod.darker_green,
                         blocks=True,
                         fighter=fighter_component,
-                        ai=ai_component)
+                        ai=ai_component,
+                        logger=self.logger)
                 # Append it to the list ob level objects
                 self.map_objects[level].append(monster)
 

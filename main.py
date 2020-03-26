@@ -19,13 +19,15 @@ def get_key_event(turn_based=None):
     return key
 
 def main(turn_based):
-    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT, PANEL_HEIGHT)
+    # system wide message logger
+    logger = Logger()
+    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT, PANEL_HEIGHT, logger)
     
     # Load custom tileset
     # load_custom_font()
     
     # Game map
-    game_map = GameMap(MAP_WIDTH, MAP_HEIGHT)
+    game_map = GameMap(MAP_WIDTH, MAP_HEIGHT, logger=logger)
     game_map.generate_map()
     player_pos = game_map.player_initial_pos
     
@@ -39,14 +41,15 @@ def main(turn_based):
         'player',
         tcod.white,
         blocks=True,
-        fighter=fighter_component)
+        fighter=fighter_component,
+        logger=logger)
     
     # Game state and player's last action
     game_state = PLAYING
     player_action = None
     # Greet the player
 
-    renderer.message(
+    logger.log_message(
         'Welcome stranger! Prepare to perish in the Tombs of the Ancient Kings.',
         tcod.red
     )

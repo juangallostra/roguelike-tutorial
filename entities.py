@@ -1,13 +1,25 @@
 import libtcodpy as tcod
-from constants import PLAYING, DEAD, DIDNT_TAKE_TURN
+from constants import *
 import math
+import textwrap
 
 UP = 'up'
 DOWN = 'down'
 
-
+## Base entity
 class BaseObject():
-    def __init__(self, x, y, char, name, color=tcod.white, blocks=False, fighter=None, ai=None):
+    def __init__(
+        self, 
+        x, 
+        y, 
+        char, 
+        name, 
+        color=tcod.white, 
+        blocks=False, 
+        fighter=None, 
+        ai=None, 
+        logger=None
+    ):
         self.name = name
         self._char = char
         self._x = x
@@ -22,6 +34,8 @@ class BaseObject():
         self.ai = ai
         if self.ai:  # let the AI component know who owns it
             self.ai.owner = self
+
+        self.logger = logger
 
     def get_color(self):
         return self._color
@@ -58,7 +72,7 @@ class BaseObject():
     def is_player(self):
         return False
 
-
+## Components
 class Fighter():
     # Combat-related properties and methods (monster, player, NPC).
     def __init__(self, hp, defense, power, death_function=None):
@@ -67,6 +81,7 @@ class Fighter():
         self.defense = defense
         self.power = power
         self.death_function = death_function
+        self.owner = None
     
     def take_damage(self, damage):
         # apply damage if possible
@@ -82,15 +97,22 @@ class Fighter():
         # a simple formula for attack damage
         damage = self.power - target.fighter.defense
  
+        msg = None
         if damage > 0:
             # make the target take some damage
-            print(self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.')
             target.fighter.take_damage(damage)
+            # if owner has a logger log message
+            msg = self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.'
         else:
-            print(self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!')
+            msg = self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
+
+        if self.owner.logger and msg:
+                self.owner.logger.log_message(msg)
 
 
 class BasicMonster():
+    def __init__(self):
+        self.owner = None
     # AI for a basic monster.
     def move_towards(self, target_x, target_y, game_map):
         # vector from this object to the target, and distance
@@ -116,10 +138,40 @@ class BasicMonster():
             elif player.fighter.hp > 0:
                 monster.fighter.attack(player)
 
+class Logger():
+    def __init__(self):
+        # message log
+        # create the list of game messages and their colors, starts empty
+        self.game_msgs = []
 
+    def log_message(self, new_msg, color=tcod.white):
+        # split the message if necessary, among multiple lines
+        new_msg_lines = textwrap.wrap(new_msg, MSG_WIDTH)
+ 
+        for line in new_msg_lines:
+            # if the buffer is full, remove the first line to make room for the new one
+            if len(self.game_msgs) == MSG_HEIGHT:
+                del self.game_msgs[0]
+ 
+            # add the new line as a tuple, with the text and the color
+            self.game_msgs.append( (line, color) )
+
+
+## Main player
 class MainPlayer(BaseObject):
-    def __init__(self, x, y, char, name, color=tcod.white, blocks=True, fighter=None, ai=None):
-        super().__init__(x, y, char, name, color, blocks, fighter, ai)
+    def __init__(
+        self,
+        x, 
+        y, 
+        char, 
+        name, 
+        color=tcod.white, 
+        blocks=True, 
+        fighter=None, 
+        ai=None,
+        logger=None
+    ):
+        super().__init__(x, y, char, name, color, blocks, fighter, ai, logger)
         self.state = PLAYING
     
     def is_player(self):
@@ -178,7 +230,8 @@ class MainPlayer(BaseObject):
 # death functions
 def player_death(player):
     # the game ended!
-    print('You died!')
+    if player.logger:
+        player.logger.log_message('You died!')
     player.state = DEAD
  
     # for added effect, transform the player into a corpse!
@@ -188,7 +241,8 @@ def player_death(player):
 def monster_death(monster):
     # transform it into a nasty corpse! it doesn't block, can't be
     # attacked and doesn't move
-    print(monster.name.capitalize() + ' is dead!')
+    if monster.logger:
+        monster.logger.log_message(monster.name.capitalize() + ' is dead!')
 
     monster.set_char('%')
     monster.set_color(tcod.dark_red)

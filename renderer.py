@@ -19,7 +19,7 @@ FOV_LIGHT_WALLS = True
 TORCH_RADIUS = 5
 
 class RenderScreen():
-    def __init__(self, width, height, panel_height):
+    def __init__(self, width, height, panel_height, logger):
         # Auxiliary console
         self._con = tcod.console_new(width, height)
         # GUI panel
@@ -27,21 +27,7 @@ class RenderScreen():
         self._width = width
         self._height = height
         self._panel_height = panel_height
-        # message log
-        # create the list of game messages and their colors, starts empty
-        self.game_msgs = []
-
-    def message(self, new_msg, color=tcod.white):
-        # split the message if necessary, among multiple lines
-        new_msg_lines = textwrap.wrap(new_msg, MSG_WIDTH)
- 
-        for line in new_msg_lines:
-            # if the buffer is full, remove the first line to make room for the new one
-            if len(self.game_msgs) == MSG_HEIGHT:
-                del self.game_msgs[0]
- 
-            # add the new line as a tuple, with the text and the color
-            self.game_msgs.append( (line, color) )
+        self.logger = logger
 
     def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
         # render a bar (HP, experience, etc). 
@@ -188,7 +174,7 @@ class RenderScreen():
  
         # print the game messages, one line at a time
         y = 1
-        for (line, color) in self.game_msgs:
+        for (line, color) in self.logger.game_msgs:
             tcod.console_set_default_foreground(self._panel, color)
             tcod.console_print_ex(self._panel, MSG_X, y, tcod.BKGND_NONE, tcod.LEFT, line)
             y += 1
