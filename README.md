@@ -6,7 +6,7 @@ The tutorial can be found [here](http://www.roguebasin.com/index.php?title=Compl
 
 ## Development status
 
-I'm currently on [Part 7](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_7).
+I'm currently on [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_8).
 
 
 #### 22/03/2020
@@ -28,10 +28,15 @@ I'm currently on [Part 7](http://www.roguebasin.com/index.php?title=Complete_Rog
 
 * [Part 6](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_6)
 
+#### 26/03/2020
+
+* [Part 7](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_7)
+
 ## List of modifications
 
 Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
 
+- Console message logging system is a component of the objects that log messages.
 - Instead of each object drawing and clearing itself, rendering is handled by an independent class (`Renderer`).
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
 - The game map is a class instead of a list of lists.
@@ -40,13 +45,14 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
-- [ ] Check real time combat
+- [ ] Check real time combat.
 - [ ] Check if `libtcod` can load both a font and a tileset. 
 - [ ] Create a tileset loader that handles all the required operations. (retro/no retro, only chars/with colors, etc.)
 - [ ] Document code.
 - [ ] Change color palette.
 - [ ] Add option to play with alphanumeric chars instead of colors/tilesets.
-- [x] Investigate how to use custom tilesets
+- [x] Bug in message log order when killing monsters.
+- [x] Investigate how to use custom tilesets.
 - [x] Add stairs to move between dungeon levels.
 - [x] Fix field of view.
 - [x] Only show objects that are in the current level.
