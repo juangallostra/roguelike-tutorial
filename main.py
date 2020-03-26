@@ -44,6 +44,12 @@ def main(turn_based):
     # Game state and player's last action
     game_state = PLAYING
     player_action = None
+    # Greet the player
+
+    renderer.message(
+        'Welcome stranger! Prepare to perish in the Tombs of the Ancient Kings.',
+        tcod.red
+    )
     # Game loop
     while not tcod.console_is_window_closed():
         # sort objects in level to draw first corpses

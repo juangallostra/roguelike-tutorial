@@ -72,10 +72,11 @@ class Fighter():
         # apply damage if possible
         if damage > 0:
             self.hp -= damage
-        #check for death. if there's a death function, call it
+        # check for death. if there's a death function, call it
         if self.hp <= 0:
             if self.death_function is not None:
                 self.death_function(self.owner)
+            self.hp = 0
     
     def attack(self, target):
         # a simple formula for attack damage
