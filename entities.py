@@ -359,10 +359,10 @@ def cast_confuse(**kwargs):
     # find closest enemy in-range and confuse it
     player = kwargs['player']
     game_map = kwargs['game_map']
-    monster = game_map.closest_monster(LIGHTNING_RANGE, player)
-    if monster is None:  # no enemy found within maximum range
-        player.logger.log_message('No enemy is close enough to confuse.', tcod.red)
-        return 'cancelled'
+    # ask the player for a target to confuse
+    player.logger.log_message('Left-click an enemy to confuse it, or right-click to cancel.', tcod.light_cyan)
+    monster = target_monster(max_range=CONFUSE_RANGE,**kwargs)
+    if monster is None: return 'cancelled'
     # replace the monster's AI with a "confused" one; after some turns it will restore the old AI
     old_ai = monster.ai
     monster.ai = ConfusedMonster(old_ai)
@@ -428,3 +428,15 @@ def target_tile(
             return (x, y)
         if mouse.rbutton_pressed or key.vk == tcod.KEY_ESCAPE:
             return (None, None)  # cancel if the player right-clicked or pressed Escape
+
+def target_monster(**kwargs):
+    # returns a clicked monster inside FOV up to a range, or None if right-clicked
+    while True:
+        (x, y) = target_tile(**kwargs)
+        if x is None:  #player cancelled
+            return None
+ 
+        # return the first clicked monster, otherwise continue looping
+        for obj in kwargs['game_map'].level_objects:
+            if obj.get_x_position() == x and obj.get_y_position() == y and obj.fighter and obj != kwargs['player']:
+                return obj
