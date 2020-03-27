@@ -149,7 +149,7 @@ class BasicMonster():
 
 
 class ConfusedMonster():
-    #AI for a temporarily confused monster (reverts to previous AI after a while).
+    # AI for a temporarily confused monster (reverts to previous AI after a while).
     def __init__(self, old_ai, num_turns=CONFUSE_NUM_TURNS):
         self.owner = None
         self.old_ai = old_ai
@@ -191,6 +191,7 @@ class Item():
         else:
             if self.use_function(player=player, game_map=game_map) != 'cancelled':
                 inventory.remove(self.owner)  # destroy after use, unless it was cancelled for some reason
+
 
 class Logger():
     def __init__(self):
