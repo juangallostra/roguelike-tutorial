@@ -109,6 +109,14 @@ def main(turn_based):
                         names_under_mouse=get_names_under_mouse(mouse, game_map),
                         show_map_chars=False
                     )
+        elif player_action == DROP_ITEM:
+            # show the inventory; if an item is selected, drop it
+            chosen_item = renderer.render_inventory_menu(
+                'Press the key next to an item to drop it, or any other to cancel.\n',
+                player.inventory
+            )
+            if chosen_item is not None:
+                chosen_item.drop(player.inventory, game_map, player)
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())

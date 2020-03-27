@@ -27,6 +27,7 @@ DEAD = 'dead'
 # player actions
 DIDNT_TAKE_TURN = 'didnt_take_turn'
 SHOW_INVENTORY = 'show_inventory'
+DROP_ITEM = 'drop_item'
 
 # 
 MAX_ITEMS = 26

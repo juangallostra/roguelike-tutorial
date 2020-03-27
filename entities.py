@@ -188,6 +188,14 @@ class Item():
             game_map.level_objects.remove(self.owner)
             self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
 
+    def drop(self, inventory, game_map, player):
+        #add to the map and remove from the player's inventory. also, place it at the player's coordinates
+        game_map.level_objects.append(self.owner)
+        inventory.remove(self.owner)
+        self.owner._x = player.get_x_position()
+        self.owner._y = player.get_y_position()
+        player.logger.log_message('You dropped a ' + self.owner.name + '.', tcod.yellow)
+
     def use(self, inventory, **kwargs):
         # Params that can be passed to use:
         # player = kwargs['player']
@@ -284,6 +292,9 @@ class MainPlayer(BaseObject):
                 if keypress.c == ord('i'):
                     # show the inventory
                     return SHOW_INVENTORY
+                if keypress.c == ord('d'):
+                    # show the inventory; if an item is selected, drop it
+                    return DROP_ITEM
         return DIDNT_TAKE_TURN
 
     def move_or_attack(self, dx, dy, game_map):
