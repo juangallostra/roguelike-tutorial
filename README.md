@@ -34,7 +34,7 @@ I'm currently on [Part 9](http://www.roguebasin.com/index.php?title=Complete_Rog
 
 #### 27/03/2020
 
-* [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_7)
+* [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_8)
 
 
 ## List of modifications
