@@ -147,6 +147,27 @@ class BasicMonster():
             elif player.fighter.hp > 0:
                 monster.fighter.attack(player)
 
+
+class ConfusedMonster():
+    #AI for a temporarily confused monster (reverts to previous AI after a while).
+    def __init__(self, old_ai, num_turns=CONFUSE_NUM_TURNS):
+        self.owner = None
+        self.old_ai = old_ai
+        self.num_turns = num_turns
+ 
+    def take_turn(self, game_map=None, player=None):
+        if self.num_turns > 0:  # still confused...
+            # move in a random direction, and decrease the number of turns confused
+            self.owner.move(tcod.random_get_int(0, -1, 1), tcod.random_get_int(0, -1, 1), game_map)
+            self.num_turns -= 1
+ 
+        else:  
+            # restore the previous AI 
+            # (this one will be deleted because it's not referenced anymore)
+            self.owner.ai = self.old_ai
+            self.owner.logger.log_message('The ' + self.owner.name + ' is no longer confused!', tcod.red)
+
+
 class Item():
     def __init__(self, use_function=None):
         self.use_function = use_function
@@ -320,3 +341,17 @@ def cast_lighting(**kwargs):
     player.logger.log_message('A lighting bolt strikes the ' + monster.name + ' with a loud thunder! The damage is '
         + str(LIGHTNING_DAMAGE) + ' hit points.', tcod.light_blue)
     monster.fighter.take_damage(LIGHTNING_DAMAGE)
+
+def cast_confuse(**kwargs):
+    # find closest enemy in-range and confuse it
+    player = kwargs['player']
+    game_map = kwargs['game_map']
+    monster = game_map.closest_monster(LIGHTNING_RANGE, player)
+    if monster is None:  # no enemy found within maximum range
+        player.logger.log_message('No enemy is close enough to confuse.', tcod.red)
+        return 'cancelled'
+    # replace the monster's AI with a "confused" one; after some turns it will restore the old AI
+    old_ai = monster.ai
+    monster.ai = ConfusedMonster(old_ai)
+    monster.ai.owner = monster  # tell the new component who owns it
+    player.logger.log_message('The eyes of the ' + monster.name + ' look vacant, as he starts to stumble around!', tcod.light_green)

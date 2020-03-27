@@ -136,7 +136,8 @@ class GameMap():
  
             # only place it if the tile is not blocked
             if not self.is_blocked(x, y, self.map_objects[level]):
-                if tcod.random_get_int(0, 0, 100) < 70:
+                rn = tcod.random_get_int(0, 0, 100)
+                if  rn < 70:
                     # create a healing potion (70% chance)
                     item_component = Item(use_function=cast_heal)
                     item = BaseObject(
@@ -148,8 +149,8 @@ class GameMap():
                         logger=self.logger,
                         item=item_component
                     )
-                else:
-                    # create a lightning bolt scroll (30% chance)
+                elif rn < (70+15):
+                    # create a lightning bolt scroll (15% chance)
                     item_component = Item(use_function=cast_lighting)
                     item = BaseObject(
                         x,
@@ -160,7 +161,18 @@ class GameMap():
                         logger=self.logger,
                         item=item_component
                     )
-
+                else:
+                    # create a confuse scroll (15% chance)
+                    item_component = Item(use_function=cast_confuse)
+                    item = BaseObject(
+                        x, 
+                        y, 
+                        '#', 
+                        'scroll of confusion', 
+                        tcod.light_blue,
+                        logger=self.logger,
+                        item=item_component
+                    )
  
                 self.map_objects[level].append(item)
                 # item.send_to_back()  #items appear below other objects
