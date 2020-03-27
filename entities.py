@@ -113,7 +113,11 @@ class Fighter():
             self.owner.logger.log_message(
                 self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
             )
-
+    def heal(self, amount):
+        # heal by the given amount, without going over the maximum
+        self.hp += amount
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
 
 class BasicMonster():
     def __init__(self):
@@ -144,7 +148,8 @@ class BasicMonster():
                 monster.fighter.attack(player)
 
 class Item():
-    def __init__(self):
+    def __init__(self, use_function=None):
+        self.use_function = use_function
         self.owner = None # The object (ex. potion) has this item component
 
     # an item that can be picked up and used.
@@ -157,6 +162,14 @@ class Item():
             inventory.append(self.owner)
             game_map.level_objects.remove(self.owner)
             self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
+
+    def use(self, inventory, target=None):
+        # just call the "use_function" if it is defined
+        if self.use_function is None:
+            self.owner.logger.log_message('The ' + self.owner.name + ' cannot be used.')
+        else:
+            if self.use_function(target) != 'cancelled':
+                inventory.remove(self.owner)  # destroy after use, unless it was cancelled for some reason
 
 class Logger():
     def __init__(self):
@@ -282,3 +295,13 @@ def monster_death(monster):
     monster.fighter = None
     monster.ai = None
     monster.name = 'remains of ' + monster.name
+
+# item functions
+def cast_heal(player):
+    # heal the player
+    if player.fighter.hp == player.fighter.max_hp:
+        player.logger.log_message('You are already at full health.', tcod.red)
+        return 'cancelled'
+ 
+    player.logger.log_message('Your wounds start to feel better!', tcod.light_violet)
+    player.fighter.heal(HEAL_AMOUNT)

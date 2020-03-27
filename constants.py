@@ -31,3 +31,6 @@ SHOW_INVENTORY = 'show_inventory'
 # 
 MAX_ITEMS = 26
 MAX_MENU_OPTIONS = 26
+
+# items
+HEAL_AMOUNT = 4

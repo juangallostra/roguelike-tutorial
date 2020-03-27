@@ -67,6 +67,11 @@ class RenderScreen():
         # present the root console to the player and wait for a key-press
         tcod.console_flush()
         key = tcod.console_wait_for_keypress(True)
+        # convert the ASCII code to an index; if it corresponds to an option, return it
+        index = key.c - ord('a')
+        if index >= 0 and index < len(options):
+            return index
+        return None
 
     def draw(self, element, game_map):
         # only draw objects that are in the Field of View
@@ -121,6 +126,10 @@ class RenderScreen():
             options = [item.name for item in inventory]
  
         index = self.menu(header, options, INVENTORY_WIDTH)
+        #if an item was chosen, return it
+        if index is None or len(inventory) == 0:
+            return None
+        return inventory[index].item
 
     def render_objects(self, elements, game_map):
         # render game state
