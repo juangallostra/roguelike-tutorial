@@ -18,7 +18,8 @@ class BaseObject():
         blocks=False, 
         fighter=None, 
         ai=None, 
-        logger=None
+        logger=None,
+        item=None
     ):
         self.name = name
         self._char = char
@@ -34,6 +35,10 @@ class BaseObject():
         self.ai = ai
         if self.ai:  # let the AI component know who owns it
             self.ai.owner = self
+
+        self.item = item # let the item component know who owns it
+        if self.item:
+            self.item.owner = self
 
         self.logger = logger
 
@@ -138,6 +143,21 @@ class BasicMonster():
             elif player.fighter.hp > 0:
                 monster.fighter.attack(player)
 
+class Item():
+    def __init__(self):
+        self.owner = None # The object (ex. potion) has this item component
+
+    # an item that can be picked up and used.
+    def pick_up(self, inventory, game_map):
+        # add to the player's inventory and remove from the map
+        if len(inventory) >= MAX_ITEMS:
+            self.owner.logger.log_message('Your inventory is full, cannot pick up ' + self.owner.name + '.', tcod.red)
+        else:
+            # Add object to inventory and remove from map
+            inventory.append(self.owner)
+            game_map.level_objects.remove(self.owner)
+            self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
+
 class Logger():
     def __init__(self):
         # message log
@@ -172,7 +192,9 @@ class MainPlayer(BaseObject):
         logger=None
     ):
         super().__init__(x, y, char, name, color, blocks, fighter, ai, logger)
-        self.state = PLAYING
+        self.state = PLAYING # initial game state
+        # inventory
+        self.inventory = []
     
     def is_player(self):
         return True
@@ -206,6 +228,12 @@ class MainPlayer(BaseObject):
                     game_map.change_level(game_map.active_level - 1)
                     game_map.fov_recompute = True
                     return
+                if keypress.c == ord('g'):
+                    # pick up an item
+                    for o in game_map.level_objects:  # look for an item in the player's tile
+                        if o.get_x_position() == self._x and o.get_y_position() == self._y and o.item:
+                            o.item.pick_up(self.inventory, game_map)
+                            break
         return DIDNT_TAKE_TURN
 
     def move_or_attack(self, dx, dy, game_map):

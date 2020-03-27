@@ -25,3 +25,6 @@ DEAD = 'dead'
 
 # player actions
 DIDNT_TAKE_TURN = 'didnt_take_turn'
+
+# 
+MAX_ITEMS = 26

@@ -113,13 +113,22 @@ class GameMap():
  
         for i in range(num_items):
             #choose random spot for this item
-            x = tcod.random_get_int(0, room.x1+1, room.x2-1)
-            y = tcod.random_get_int(0, room.y1+1, room.y2-1)
+            x = tcod.random_get_int(0, room.x1 + 1, room.x2 - 1)
+            y = tcod.random_get_int(0, room.y1 + 1, room.y2 - 1)
  
             #only place it if the tile is not blocked
             if not self.is_blocked(x, y, self.map_objects[level]):
                 #create a healing potion
-                item = BaseObject(x, y, '!', 'Healing Potion', tcod.violet)
+                item_component = Item()
+                item = BaseObject(
+                    x, 
+                    y, 
+                    '!', 
+                    'Healing Potion', 
+                    tcod.violet, 
+                    logger=self.logger,
+                    item=item_component
+                )
  
                 self.map_objects[level].append(item)
                 # item.send_to_back()  #items appear below other objects
