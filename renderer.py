@@ -24,28 +24,49 @@ class RenderScreen():
         self._con = tcod.console_new(width, height)
         # GUI panel
         self._panel = tcod.console_new(width, panel_height)
+        # Menu (don't create it yet, it has variable size)
+        self._window = None
         self._width = width
         self._height = height
         self._panel_height = panel_height
         self.logger = logger
 
-    def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
-        # render a bar (HP, experience, etc). 
-        # first calculate the width of the bar
-        bar_width = int(float(value) / maximum * total_width)
+    def menu(self, header, options, width):
+        if len(options) > MAX_MENU_OPTIONS: 
+            raise ValueError('Cannot have a menu with more than'+ str(MAX_MENU_OPTIONS) +'options.')
+        # calculate total height for the header (after auto-wrap) and one line per option
+        header_height = tcod.console_get_height_rect(self._con, 0, 0, width, self._height, header)
+        height = len(options) + header_height
+        #create an off-screen console that represents the menu's window
+        self._window = tcod.console_new(width, height)
  
-        # render the background first
-        tcod.console_set_default_background(self._panel, back_color)
-        tcod.console_rect(self._panel, x, y, total_width, 1, False, tcod.BKGND_SCREEN)
- 
-        # now render the bar on top
-        tcod.console_set_default_background(self._panel, bar_color)
-        if bar_width > 0:
-            tcod.console_rect(self._panel, x, y, bar_width, 1, False, tcod.BKGND_SCREEN)
-        # finally, some centered text with the values
-        tcod.console_set_default_foreground(self._panel, tcod.white)
-        tcod.console_print_ex(self._panel, int(x + total_width / 2), y, tcod.BKGND_NONE, tcod.CENTER,
-            name + ': ' + str(value) + '/' + str(maximum))
+        #print the header, with auto-wrap
+        tcod.console_set_default_foreground(self._window, tcod.white)
+        tcod.console_print_rect_ex(
+            self._window, 
+            0, 
+            0, 
+            width, 
+            height, 
+            tcod.BKGND_NONE, 
+            tcod.LEFT, 
+            header
+        )
+        # print all the options
+        y = header_height
+        letter_index = ord('a')
+        for option_text in options:
+            text = '(' + chr(letter_index) + ') ' + option_text
+            tcod.console_print_ex(self._window, 0, y, tcod.BKGND_NONE, tcod.LEFT, text)
+            y += 1
+            letter_index += 1
+        # blit the contents of "window" to the root console
+        x = int(self._width/2 - width/2)
+        y = int(self._height/2 - height/2)
+        tcod.console_blit(self._window, 0, 0, width, height, 0, x, y, 1.0, 0.7)
+        # present the root console to the player and wait for a key-press
+        tcod.console_flush()
+        key = tcod.console_wait_for_keypress(True)
 
     def draw(self, element, game_map):
         # only draw objects that are in the Field of View
@@ -73,6 +94,33 @@ class RenderScreen():
             ' ',
             tcod.BKGND_NONE
         )
+
+    def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
+        # render a bar (HP, experience, etc). 
+        # first calculate the width of the bar
+        bar_width = int(float(value) / maximum * total_width)
+ 
+        # render the background first
+        tcod.console_set_default_background(self._panel, back_color)
+        tcod.console_rect(self._panel, x, y, total_width, 1, False, tcod.BKGND_SCREEN)
+ 
+        # now render the bar on top
+        tcod.console_set_default_background(self._panel, bar_color)
+        if bar_width > 0:
+            tcod.console_rect(self._panel, x, y, bar_width, 1, False, tcod.BKGND_SCREEN)
+        # finally, some centered text with the values
+        tcod.console_set_default_foreground(self._panel, tcod.white)
+        tcod.console_print_ex(self._panel, int(x + total_width / 2), y, tcod.BKGND_NONE, tcod.CENTER,
+            name + ': ' + str(value) + '/' + str(maximum))
+
+    def render_inventory_menu(self, header, inventory):
+        # show a menu with each item of the inventory as an option
+        if len(inventory) == 0:
+            options = ['Inventory is empty.']
+        else:
+            options = [item.name for item in inventory]
+ 
+        index = self.menu(header, options, INVENTORY_WIDTH)
 
     def render_objects(self, elements, game_map):
         # render game state

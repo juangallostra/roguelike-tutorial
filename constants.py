@@ -13,6 +13,7 @@ MAP_HEIGHT = 43
 BAR_WIDTH = 20
 PANEL_HEIGHT = 7
 PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
+INVENTORY_WIDTH = 50
 
 # message log
 MSG_X = BAR_WIDTH + 2
@@ -25,6 +26,8 @@ DEAD = 'dead'
 
 # player actions
 DIDNT_TAKE_TURN = 'didnt_take_turn'
+SHOW_INVENTORY = 'show_inventory'
 
 # 
 MAX_ITEMS = 26
+MAX_MENU_OPTIONS = 26

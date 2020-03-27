@@ -234,6 +234,9 @@ class MainPlayer(BaseObject):
                         if o.get_x_position() == self._x and o.get_y_position() == self._y and o.item:
                             o.item.pick_up(self.inventory, game_map)
                             break
+                if keypress.c == ord('i'):
+                    # show the inventory
+                    return SHOW_INVENTORY
         return DIDNT_TAKE_TURN
 
     def move_or_attack(self, dx, dy, game_map):
