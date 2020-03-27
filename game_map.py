@@ -11,6 +11,7 @@ UP = 'up'
 DOWN = 'down'
 
 MAX_ROOM_MONSTERS = 3
+MAX_ROOM_ITEMS = 2
 
 class Tile():
     # A tile of the map and its properties
@@ -106,6 +107,23 @@ class GameMap():
         return self._height
 
     def place_objects_in_room(self, level, room):
+        # place objects
+         #choose random number of items
+        num_items = tcod.random_get_int(0, 0, MAX_ROOM_ITEMS)
+ 
+        for i in range(num_items):
+            #choose random spot for this item
+            x = tcod.random_get_int(0, room.x1+1, room.x2-1)
+            y = tcod.random_get_int(0, room.y1+1, room.y2-1)
+ 
+            #only place it if the tile is not blocked
+            if not self.is_blocked(x, y, self.map_objects[level]):
+                #create a healing potion
+                item = BaseObject(x, y, '!', 'Healing Potion', tcod.violet)
+ 
+                self.map_objects[level].append(item)
+                # item.send_to_back()  #items appear below other objects
+
         # choose random number of monsters
         num_monsters = tcod.random_get_int(0, 0, MAX_ROOM_MONSTERS)
  
