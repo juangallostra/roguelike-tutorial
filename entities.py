@@ -163,12 +163,12 @@ class Item():
             game_map.level_objects.remove(self.owner)
             self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
 
-    def use(self, inventory, target=None):
+    def use(self, inventory, player=None, game_map=None):
         # just call the "use_function" if it is defined
         if self.use_function is None:
             self.owner.logger.log_message('The ' + self.owner.name + ' cannot be used.')
         else:
-            if self.use_function(target) != 'cancelled':
+            if self.use_function(player=player, game_map=game_map) != 'cancelled':
                 inventory.remove(self.owner)  # destroy after use, unless it was cancelled for some reason
 
 class Logger():
@@ -296,12 +296,27 @@ def monster_death(monster):
     monster.ai = None
     monster.name = 'remains of ' + monster.name
 
-# item functions
-def cast_heal(player):
+# item functions. They receive the player and the game_map as params
+def cast_heal(**kwargs):        
     # heal the player
+    player = kwargs['player']
     if player.fighter.hp == player.fighter.max_hp:
         player.logger.log_message('You are already at full health.', tcod.red)
         return 'cancelled'
  
     player.logger.log_message('Your wounds start to feel better!', tcod.light_violet)
     player.fighter.heal(HEAL_AMOUNT)
+
+def cast_lighting(**kwargs):
+    #find closest enemy (inside a maximum range) and damage it
+    player = kwargs['player']
+    game_map = kwargs['game_map']
+    monster = game_map.closest_monster(LIGHTNING_RANGE, player)
+    if monster is None:  #no enemy found within maximum range
+        player.logger.log_message('No enemy is close enough to strike.', tcod.red)
+        return 'cancelled'
+ 
+    #zap it!
+    player.logger.log_message('A lighting bolt strikes the ' + monster.name + ' with a loud thunder! The damage is '
+        + str(LIGHTNING_DAMAGE) + ' hit points.', tcod.light_blue)
+    monster.fighter.take_damage(LIGHTNING_DAMAGE)

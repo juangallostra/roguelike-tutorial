@@ -78,6 +78,24 @@ class GameMap():
         self.fov_maps = None
         self.fov_map = None 
 
+    def closest_monster(self, max_range, player):
+        # find closest enemy, up to a maximum range, and in the player's FOV
+        closest_enemy = None
+        closest_dist = max_range + 1  # start with (slightly more than) maximum range
+ 
+        for o in self.level_objects:
+            if o.fighter and not o == player and tcod.map_is_in_fov(
+                self.fov_map, 
+                o.get_x_position(), 
+                o.get_y_position()
+            ):
+                # calculate distance between this object and the player
+                dist = player.distance_to(o)
+                if dist < closest_dist:  # it's closer, so remember it
+                    closest_enemy = o
+                    closest_dist = dist
+        return closest_enemy
+
     def change_level(self, target_level, only_tile_map=False):
         # Change current dungeon level
         if 0 <= target_level < self._levels:
@@ -118,17 +136,31 @@ class GameMap():
  
             # only place it if the tile is not blocked
             if not self.is_blocked(x, y, self.map_objects[level]):
-                # create a healing potion
-                item_component = Item(use_function=cast_heal)
-                item = BaseObject(
-                    x, 
-                    y, 
-                    '!', 
-                    'Healing Potion', 
-                    tcod.violet, 
-                    logger=self.logger,
-                    item=item_component
-                )
+                if tcod.random_get_int(0, 0, 100) < 70:
+                    # create a healing potion (70% chance)
+                    item_component = Item(use_function=cast_heal)
+                    item = BaseObject(
+                        x, 
+                        y, 
+                        '!', 
+                        'Healing Potion', 
+                        tcod.violet, 
+                        logger=self.logger,
+                        item=item_component
+                    )
+                else:
+                    # create a lightning bolt scroll (30% chance)
+                    item_component = Item(use_function=cast_lighting)
+                    item = BaseObject(
+                        x,
+                        y,
+                        '#',
+                        'scroll of lightning bolt',
+                        tcod.light_yellow,
+                        logger=self.logger,
+                        item=item_component
+                    )
+
  
                 self.map_objects[level].append(item)
                 # item.send_to_back()  #items appear below other objects

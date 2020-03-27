@@ -92,7 +92,7 @@ def main(turn_based):
                     player.inventory
                 )
                 if chosen_item is not None:
-                    chosen_item.use(player.inventory, player)
+                    chosen_item.use(player.inventory, player=player, game_map=game_map)
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
