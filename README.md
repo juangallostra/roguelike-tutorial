@@ -6,7 +6,7 @@ The tutorial can be found [here](http://www.roguebasin.com/index.php?title=Compl
 
 ## Development status
 
-I'm currently on [Part 9](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_9).
+I'm currently on [Part 10](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_10).
 
 
 #### 22/03/2020
@@ -35,6 +35,7 @@ I'm currently on [Part 9](http://www.roguebasin.com/index.php?title=Complete_Rog
 #### 27/03/2020
 
 * [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_8)
+* [Part 9](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_9)
 
 
 ## List of modifications
