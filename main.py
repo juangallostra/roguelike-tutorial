@@ -92,7 +92,23 @@ def main(turn_based):
                     player.inventory
                 )
                 if chosen_item is not None:
-                    chosen_item.use(player.inventory, player=player, game_map=game_map)
+                    # player = kwargs['player']
+                    # game_map = kwargs['game_map']
+                    # renderer = kwargs['renderer']
+                    # names_under_mouse = kwargs['names_under_mouse']
+                    # show_map_chars = kwargs['show_map_chars']
+                    # mouse = kwargs['mouse']
+                    # key = kwargs['key']
+                    chosen_item.use(
+                        player.inventory, 
+                        player=player, 
+                        game_map=game_map,
+                        mouse=mouse,
+                        renderer=renderer,
+                        key=key,
+                        names_under_mouse=get_names_under_mouse(mouse, game_map),
+                        show_map_chars=False
+                    )
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())

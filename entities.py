@@ -69,6 +69,10 @@ class BaseObject():
         dy = other.get_y_position() - self._y
         return math.sqrt(dx ** 2 + dy ** 2)
 
+    def distance(self, x, y):
+        #return the distance to some coordinates
+        return math.sqrt((x - self._x) ** 2 + (y - self._y) ** 2)
+
     def move(self, dx, dy, game_map):
         if not game_map.is_blocked(self._x + dx, self._y + dy):
             self._x += dx
@@ -184,12 +188,20 @@ class Item():
             game_map.level_objects.remove(self.owner)
             self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
 
-    def use(self, inventory, player=None, game_map=None):
+    def use(self, inventory, **kwargs):
+        # Params that can be passed to use:
+        # player = kwargs['player']
+        # game_map = kwargs['game_map']
+        # renderer = kwargs['renderer']
+        # names_under_mouse = kwargs['names_under_mouse']
+        # show_map_chars = kwargs['show_map_chars']
+        # mouse = kwargs['mouse']
+        # key = kwargs['key']
         # just call the "use_function" if it is defined
         if self.use_function is None:
             self.owner.logger.log_message('The ' + self.owner.name + ' cannot be used.')
         else:
-            if self.use_function(player=player, game_map=game_map) != 'cancelled':
+            if self.use_function(**kwargs) != 'cancelled':
                 inventory.remove(self.owner)  # destroy after use, unless it was cancelled for some reason
 
 
@@ -356,3 +368,63 @@ def cast_confuse(**kwargs):
     monster.ai = ConfusedMonster(old_ai)
     monster.ai.owner = monster  # tell the new component who owns it
     player.logger.log_message('The eyes of the ' + monster.name + ' look vacant, as he starts to stumble around!', tcod.light_green)
+
+def cast_fireball(**kwargs):
+    # find closest enemy in-range and confuse it
+    player = kwargs['player']
+    game_map = kwargs['game_map']
+    renderer = kwargs['renderer']
+    names_under_mouse = kwargs['names_under_mouse']
+    show_map_chars = kwargs['show_map_chars']
+    mouse = kwargs['mouse']
+    key = kwargs['key']
+    # ask the player for a target tile to throw a fireball at
+    player.logger.log_message('Left-click a target tile for the fireball, or right-click to cancel.', tcod.light_cyan)
+    (x, y) = target_tile(
+        max_range=None, 
+        mouse=mouse,
+        key=key,
+        renderer=renderer,
+        game_map=game_map,
+        player=player,
+        names_under_mouse=names_under_mouse,
+        show_map_chars=show_map_chars
+    )
+    if x is None: return 'cancelled'
+    player.logger.log_message('The fireball explodes, burning everything within ' + str(FIREBALL_RADIUS) + ' tiles!', tcod.orange)
+ 
+    for obj in game_map.level_objects:  #damage every fighter in range, including the player
+        if obj.distance(x, y) <= FIREBALL_RADIUS and obj.fighter:
+            player.logger.log_message('The ' + obj.name + ' gets burned for ' + str(FIREBALL_DAMAGE) + ' hit points.', tcod.orange)
+            obj.fighter.take_damage(FIREBALL_DAMAGE)
+
+## Helper methods
+def target_tile(
+        max_range=None, 
+        mouse=None, 
+        key=None, 
+        renderer=None, 
+        game_map=None,
+        player=None,
+        names_under_mouse=None,
+        show_map_chars=False
+    ):
+    # return the position of a tile left-clicked in player's 
+    # FOV (optionally in a range), or (None,None) if right-clicked.
+    while True:
+        # render the screen. this erases the inventory and
+        # shows the names of objects under the mouse.
+        tcod.console_flush()
+        tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS | tcod.EVENT_MOUSE, key, mouse)
+        objects = game_map.level_objects + [player]
+        renderer.render_all(objects, game_map, names_under_mouse, show_map_chars)
+ 
+        (x, y) = (mouse.cx, mouse.cy)
+ 
+        # accept the target if the player clicked in FOV, and in case 
+        # a range is specified, if it's in that range
+        if (mouse.lbutton_pressed and tcod.map_is_in_fov(game_map.fov_map, x, y) and
+            (max_range is None or player.distance(x, y) <= max_range)):
+            return (x, y)
+        if mouse.rbutton_pressed or key.vk == tcod.KEY_ESCAPE:
+            return (None, None)  # cancel if the player right-clicked or pressed Escape

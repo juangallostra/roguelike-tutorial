@@ -149,7 +149,7 @@ class GameMap():
                         logger=self.logger,
                         item=item_component
                     )
-                elif rn < (70+15):
+                elif rn < (70+10):
                     # create a lightning bolt scroll (15% chance)
                     item_component = Item(use_function=cast_lighting)
                     item = BaseObject(
@@ -161,6 +161,17 @@ class GameMap():
                         logger=self.logger,
                         item=item_component
                     )
+                elif rn < (70+10+10):
+                    # create a fireball scroll (10% chance)
+                    item_component = Item(use_function=cast_fireball)
+                    item = BaseObject(
+                        x, 
+                        y, 
+                        '#', 
+                        'scroll of fireball', 
+                        tcod.dark_flame,
+                        logger=self.logger,
+                        item=item_component)
                 else:
                     # create a confuse scroll (15% chance)
                     item_component = Item(use_function=cast_confuse)
