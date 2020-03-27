@@ -6,7 +6,7 @@ The tutorial can be found [here](http://www.roguebasin.com/index.php?title=Compl
 
 ## Development status
 
-I'm currently on [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_8).
+I'm currently on [Part 9](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_9).
 
 
 #### 22/03/2020
@@ -32,6 +32,11 @@ I'm currently on [Part 8](http://www.roguebasin.com/index.php?title=Complete_Rog
 
 * [Part 7](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_7)
 
+#### 27/03/2020
+
+* [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_7)
+
+
 ## List of modifications
 
 Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
@@ -45,6 +50,8 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
+- [ ] Move strings to constants (key codes, object names, etc.).
+- [ ] Add method in objects to relocate them in array so that they are drawn in the correct order.
 - [ ] Check real time combat.
 - [ ] Check if `libtcod` can load both a font and a tileset from diferent files. 
 - [ ] Create a tileset loader that handles all the required operations. (retro/no retro, only chars/chars and colors, etc.)

@@ -87,10 +87,12 @@ def main(turn_based):
         # key = get_key_event(turn_based)
         player_action = player.handle_keys(game_map, game_state, key)
         if player_action == SHOW_INVENTORY:
-                renderer.render_inventory_menu(
+                chosen_item = renderer.render_inventory_menu(
                     'Press the key next to an item to use it, or any other to cancel.\n',
                     player.inventory
                 )
+                if chosen_item is not None:
+                    chosen_item.use(player.inventory, player)
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
