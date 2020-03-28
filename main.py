@@ -1,4 +1,5 @@
 import libtcodpy as tcod
+import shelve
 
 from constants import *
 from entities import *
@@ -123,7 +124,7 @@ def main(renderer, game_map, player, logger, turn_based=True):
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
         elif key.vk == tcod.KEY_ESCAPE:
             # go to main menu
-            renderer.render_main_menu()
+            choice = renderer.render_main_menu()
             if choice == NEW_GAME:
                 logger.clear_messages()
                 game_map, player = new_game(logger, renderer)
@@ -137,6 +138,21 @@ def main(renderer, game_map, player, logger, turn_based=True):
                     o for o in game_map.level_objects if o.fighter is not None
                 ]
                 renderer.render_all(game_map.level_objects + [player], game_map, names_under_mouse, show_map_chars=False)
+            elif choice == LOAD_GAME:
+                try:
+                    player, game_state = load_game(game_map, logger)
+                    player.logger = logger
+                    for l in game_map.map_objects:
+                        for o in l:
+                            o.logger = logger
+                    game_map.level_objects = [
+                        o for o in game_map.level_objects if o.fighter is None
+                    ] + [
+                        o for o in game_map.level_objects if o.fighter is not None
+                    ]
+                    renderer.render_all(game_map.level_objects + [player], game_map, names_under_mouse, show_map_chars=False)
+                except:
+                    renderer.msgbox('\n No saved game to load.\n', 24)
         # let monsters take their turn if the player did
         if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
             for o in objects:
@@ -146,7 +162,31 @@ def main(renderer, game_map, player, logger, turn_based=True):
         game_state = player.state
         names_under_mouse = get_names_under_mouse(mouse, game_map)
         renderer.render_all(objects, game_map, names_under_mouse, show_map_chars=False)
+    save_game(game_map, game_state, player, logger)
 
+def save_game(game_map, game_state, player, logger):
+    with shelve.open('gamedata', 'n') as gd:
+        gd['maps'] = game_map.full_map
+        gd['active_level'] = game_map.active_level
+        gd['objects'] = game_map.map_objects
+        gd['player'] = player
+        gd['inventory'] = player.inventory
+        gd['game_msgs'] = logger.game_msgs
+        gd['game_state'] = game_state
+
+def load_game(game_map, logger):
+    # open the previously saved shelve and load the game data
+    with shelve.open('gamedata', 'r') as gd:
+        game_map.full_map = gd['maps']
+        game_map.active_level = gd['active_level']
+        game_map.map_objects = gd['objects']
+        player = gd['player']
+        player.inventory = gd['inventory']
+        logger.game_msgs = gd['game_msgs']
+        game_state = gd['game_state'] 
+        game_map.init_fov()
+        game_map.change_level(game_map.active_level, only_tile_map=False) # only tile map?        
+        return player, game_state
 
 if __name__ == "__main__":
     # Game config
@@ -161,3 +201,10 @@ if __name__ == "__main__":
     if choice == NEW_GAME:
         game_map, player = new_game(logger, renderer) 
         main(renderer, game_map, player, logger, turn_based)
+    elif choice == LOAD_GAME:
+        print('loading_game')
+        try:
+            game_state = load_game(game_map, player, logger)
+        except:
+            renderer.msgbox('\n No saved game to load.\n', 24)
+

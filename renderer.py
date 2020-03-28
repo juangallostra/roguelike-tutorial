@@ -110,6 +110,9 @@ class RenderScreen():
             tcod.BKGND_NONE
         )
 
+    def msgbox(self, text, width=50):
+        self.menu(text, [], width)  #use menu() as a sort of "message box"
+
     def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
         # render a bar (HP, experience, etc). 
         # first calculate the width of the bar

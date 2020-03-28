@@ -328,6 +328,10 @@ class GameMap():
         self.add_stairs()
         # Now that we know which tiles are blocked, generate FOV maps
         # for each level
+        self.init_fov()
+        self.change_level(0)
+    
+    def init_fov(self):
         self.fov_maps = {
             i: tcod.map_new(self._width, self._height) for i in range(N_LEVELS)
         }
@@ -341,5 +345,3 @@ class GameMap():
                         not self.full_map[level][x][y].block_sight,
                         not self.full_map[level][x][y].blocked
                     )
-
-        self.change_level(0)
