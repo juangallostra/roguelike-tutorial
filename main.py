@@ -202,9 +202,20 @@ if __name__ == "__main__":
         game_map, player = new_game(logger, renderer) 
         main(renderer, game_map, player, logger, turn_based)
     elif choice == LOAD_GAME:
-        print('loading_game')
         try:
-            game_state = load_game(game_map, player, logger)
+            game_map = GameMap(MAP_WIDTH, MAP_HEIGHT, logger=logger)
+            player, game_state = load_game(game_map, logger)
+            player.logger = logger
+            for l in game_map.map_objects:
+                for o in l:
+                    o.logger = logger
+            game_map.level_objects = [
+                o for o in game_map.level_objects if o.fighter is None
+            ] + [
+                o for o in game_map.level_objects if o.fighter is not None
+            ]
+            renderer.render_all(game_map.level_objects + [player], game_map, '', show_map_chars=False)
+            main(renderer, game_map, player, logger, turn_based)
         except:
             renderer.msgbox('\n No saved game to load.\n', 24)
 

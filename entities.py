@@ -192,6 +192,7 @@ class Item():
     def drop(self, inventory, game_map, player):
         #add to the map and remove from the player's inventory. also, place it at the player's coordinates
         game_map.level_objects.append(self.owner)
+        game_map.map_objects[game_map.active_level].append(self.owner)
         inventory.remove(self.owner)
         self.owner._x = player.get_x_position()
         self.owner._y = player.get_y_position()
