@@ -6,7 +6,7 @@ The tutorial can be found [here](http://www.roguebasin.com/index.php?title=Compl
 
 ## Development status
 
-I'm currently on [Part 10](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_10).
+I'm currently on [Part 11](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_11).
 
 
 #### 22/03/2020
@@ -37,11 +37,15 @@ I'm currently on [Part 10](http://www.roguebasin.com/index.php?title=Complete_Ro
 * [Part 8](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_8)
 * [Part 9](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_9)
 
+#### 28/03/2020
+
+* [Part 10](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_10)
 
 ## List of modifications
 
 Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
 
+- Avoid the use of global variables.
 - Console message logging system is a component of the objects that log messages.
 - Instead of each object drawing and clearing itself, rendering is handled by an independent class (`Renderer`).
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
