@@ -141,15 +141,6 @@ def main(renderer, game_map, player, logger, turn_based=True):
             elif choice == LOAD_GAME:
                 try:
                     player, game_state = load_game(game_map, logger)
-                    player.logger = logger
-                    for l in game_map.map_objects:
-                        for o in l:
-                            o.logger = logger
-                    game_map.level_objects = [
-                        o for o in game_map.level_objects if o.fighter is None
-                    ] + [
-                        o for o in game_map.level_objects if o.fighter is not None
-                    ]
                     renderer.render_all(game_map.level_objects + [player], game_map, names_under_mouse, show_map_chars=False)
                 except:
                     renderer.msgbox('\n No saved game to load.\n', 24)
@@ -185,7 +176,16 @@ def load_game(game_map, logger):
         logger.game_msgs = gd['game_msgs']
         game_state = gd['game_state'] 
         game_map.init_fov()
-        game_map.change_level(game_map.active_level, only_tile_map=False) # only tile map?        
+        game_map.change_level(game_map.active_level, only_tile_map=False) # only tile map?    
+        player.logger = logger
+        for l in game_map.map_objects:
+            for o in l:
+                o.logger = logger
+        game_map.level_objects = [
+            o for o in game_map.level_objects if o.fighter is None
+        ] + [
+            o for o in game_map.level_objects if o.fighter is not None
+        ]    
         return player, game_state
 
 if __name__ == "__main__":
@@ -205,15 +205,6 @@ if __name__ == "__main__":
         try:
             game_map = GameMap(MAP_WIDTH, MAP_HEIGHT, logger=logger)
             player, game_state = load_game(game_map, logger)
-            player.logger = logger
-            for l in game_map.map_objects:
-                for o in l:
-                    o.logger = logger
-            game_map.level_objects = [
-                o for o in game_map.level_objects if o.fighter is None
-            ] + [
-                o for o in game_map.level_objects if o.fighter is not None
-            ]
             renderer.render_all(game_map.level_objects + [player], game_map, '', show_map_chars=False)
             main(renderer, game_map, player, logger, turn_based)
         except:
