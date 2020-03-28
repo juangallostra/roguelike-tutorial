@@ -33,7 +33,9 @@ def get_names_under_mouse(mouse, game_map):
     names = ', '.join(names)  #join the names, separated by commas
     return names.capitalize()
 
-def new_game(logger):
+def new_game(logger, renderer):
+    # clear console
+    renderer.clear_all()
     # Game map
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT, logger=logger)
     # generate an populate dungeons, create fov map 
@@ -120,7 +122,21 @@ def main(renderer, game_map, player, logger, turn_based=True):
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
         elif key.vk == tcod.KEY_ESCAPE:
-            break  # exit game
+            # go to main menu
+            renderer.render_main_menu()
+            if choice == NEW_GAME:
+                logger.clear_messages()
+                game_map, player = new_game(logger, renderer)
+                game_state = PLAYING
+                player_action = None
+                names_under_mouse = get_names_under_mouse(mouse, game_map)
+
+                game_map.level_objects = [
+                    o for o in game_map.level_objects if o.fighter is None
+                ] + [
+                    o for o in game_map.level_objects if o.fighter is not None
+                ]
+                renderer.render_all(game_map.level_objects + [player], game_map, names_under_mouse, show_map_chars=False)
         # let monsters take their turn if the player did
         if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
             for o in objects:
@@ -130,6 +146,7 @@ def main(renderer, game_map, player, logger, turn_based=True):
         game_state = player.state
         names_under_mouse = get_names_under_mouse(mouse, game_map)
         renderer.render_all(objects, game_map, names_under_mouse, show_map_chars=False)
+
 
 if __name__ == "__main__":
     # Game config
@@ -142,5 +159,5 @@ if __name__ == "__main__":
     renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT, PANEL_HEIGHT, logger)
     choice = renderer.render_main_menu()
     if choice == NEW_GAME:
-        game_map, player = new_game(logger) 
+        game_map, player = new_game(logger, renderer) 
         main(renderer, game_map, player, logger, turn_based)

@@ -31,11 +31,16 @@ class RenderScreen():
         self._panel_height = panel_height
         self.logger = logger
 
+    def clear_all(self):
+        tcod.console_clear(self._con)
+
     def menu(self, header, options, width):
         if len(options) > MAX_MENU_OPTIONS: 
             raise ValueError('Cannot have a menu with more than'+ str(MAX_MENU_OPTIONS) +'options.')
         # calculate total height for the header (after auto-wrap) and one line per option
         header_height = tcod.console_get_height_rect(self._con, 0, 0, width, self._height, header)
+        if header == '':
+            header_height = 0
         height = len(options) + header_height
         #create an off-screen console that represents the menu's window
         self._window = tcod.console_new(width, height)
@@ -67,6 +72,11 @@ class RenderScreen():
         # present the root console to the player and wait for a key-press
         tcod.console_flush()
         key = tcod.console_wait_for_keypress(True)
+
+        # TODO: currently not working
+        if key.vk == tcod.KEY_ENTER and key.lalt:  #(special case) Alt+Enter: toggle fullscreen
+            tcod.console_set_fullscreen(not tcod.console_is_fullscreen())
+        
         # convert the ASCII code to an index; if it corresponds to an option, return it
         index = key.c - ord('a')
         if index >= 0 and index < len(options):
@@ -249,6 +259,10 @@ class RenderScreen():
         while not tcod.console_is_window_closed():
             # show the background image, at twice the regular console resolution
             tcod.image_blit_2x(img, 0, 0, 0)
+            # game name and credits
+            tcod.console_set_default_foreground(0, tcod.light_yellow)
+            tcod.console_print_ex(0, int(SCREEN_WIDTH/2), int(SCREEN_HEIGHT/2-4), tcod.BKGND_NONE, tcod.CENTER, GAME_NAME)
+            tcod.console_print_ex(0, int(SCREEN_WIDTH/2), SCREEN_HEIGHT-2, tcod.BKGND_NONE, tcod.CENTER, AUTHOR)
             # show options and wait for the player's choice
             choice = self.menu('', ['Play a new game', 'Continue last game', 'Quit'], 24)
             return choice

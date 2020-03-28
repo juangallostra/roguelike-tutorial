@@ -231,6 +231,8 @@ class Logger():
             # add the new line as a tuple, with the text and the color
             self.game_msgs.append( (line, color) )
 
+    def clear_messages(self):
+        self.game_msgs = []
 
 ## Main player
 class MainPlayer(BaseObject):

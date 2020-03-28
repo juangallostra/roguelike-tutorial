@@ -5,6 +5,9 @@ LIMIT_FPS = 20
 WINDOW_TITLE = 'Python 3 libtcod tutorial'
 FULLSCREEN = False
 
+GAME_NAME = 'TOMBS OF THE ANCIENT KINGS'
+AUTHOR = 'By Galloafro'
+
 # map sizes
 MAP_WIDTH = 80
 MAP_HEIGHT = 43
