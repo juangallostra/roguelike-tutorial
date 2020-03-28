@@ -186,6 +186,7 @@ class Item():
             # Add object to inventory and remove from map
             inventory.append(self.owner)
             game_map.level_objects.remove(self.owner)
+            game_map.map_objects[game_map.active_level].remove(self.owner)
             self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
 
     def drop(self, inventory, game_map, player):
