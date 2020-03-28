@@ -243,6 +243,15 @@ class RenderScreen():
         tcod.console_set_default_foreground(self._panel, tcod.light_gray)
         tcod.console_print_ex(self._panel, 1, 0, tcod.BKGND_NONE, tcod.LEFT, names_under_mouse)
 
+    def render_main_menu(self):
+        img = tcod.image_load('menu_background.png')
+        choice = QUIT
+        while not tcod.console_is_window_closed():
+            # show the background image, at twice the regular console resolution
+            tcod.image_blit_2x(img, 0, 0, 0)
+            # show options and wait for the player's choice
+            choice = self.menu('', ['Play a new game', 'Continue last game', 'Quit'], 24)
+            return choice
 
     def render_all(self, objects, game_map, names_under_mouse, show_map_chars=False):
         # grab player

@@ -24,6 +24,11 @@ MSG_HEIGHT = PANEL_HEIGHT - 1
 PLAYING = 'playing'
 DEAD = 'dead'
 
+# main menu
+NEW_GAME = 0
+LOAD_GAME = 1
+QUIT = 2
+
 # player actions
 DIDNT_TAKE_TURN = 'didnt_take_turn'
 SHOW_INVENTORY = 'show_inventory'

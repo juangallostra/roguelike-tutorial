@@ -33,10 +33,7 @@ def get_names_under_mouse(mouse, game_map):
     names = ', '.join(names)  #join the names, separated by commas
     return names.capitalize()
 
-def new_game():
-    # system wide message logger
-    logger = Logger()
-
+def new_game(logger):
     # Game map
     game_map = GameMap(MAP_WIDTH, MAP_HEIGHT, logger=logger)
     # generate an populate dungeons, create fov map 
@@ -62,11 +59,9 @@ def new_game():
         'Welcome stranger! Prepare to perish in the Tombs of the Ancient Kings.',
         tcod.red
     )
-    return game_map, player, logger
+    return game_map, player
 
-def main(game_map, player, logger, turn_based=True):
-    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT, PANEL_HEIGHT, logger)
-    
+def main(renderer, game_map, player, logger, turn_based=True):    
     # Load custom tileset
     # load_custom_font()
     
@@ -142,5 +137,10 @@ if __name__ == "__main__":
     tcod.console_set_custom_font(FONT_PATH, FONT_FLAGS)
     tcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE, FULLSCREEN)
     tcod.sys_set_fps(LIMIT_FPS)
-    game_map, player, logger = new_game() 
-    main(game_map, player, logger, turn_based)
+    # system wide message logger
+    logger = Logger()
+    renderer = RenderScreen(SCREEN_WIDTH, SCREEN_HEIGHT, PANEL_HEIGHT, logger)
+    choice = renderer.render_main_menu()
+    if choice == NEW_GAME:
+        game_map, player = new_game(logger) 
+        main(renderer, game_map, player, logger, turn_based)
