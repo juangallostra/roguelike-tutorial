@@ -30,7 +30,7 @@ DEAD = 'dead'
 # main menu
 NEW_GAME = 0
 LOAD_GAME = 1
-QUIT = 2
+EXIT_GAME = 2
 
 # player actions
 DIDNT_TAKE_TURN = 'didnt_take_turn'

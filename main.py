@@ -144,6 +144,8 @@ def main(renderer, game_map, player, logger, turn_based=True):
                     renderer.render_all(game_map.level_objects + [player], game_map, names_under_mouse, show_map_chars=False)
                 except:
                     renderer.msgbox('\n No saved game to load.\n', 24)
+            elif choice == EXIT_GAME:
+                break
         # let monsters take their turn if the player did
         if game_state == PLAYING and player_action != DIDNT_TAKE_TURN:
             for o in objects:
