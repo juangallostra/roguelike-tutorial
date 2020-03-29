@@ -18,6 +18,7 @@ PANEL_HEIGHT = 7
 PANEL_Y = SCREEN_HEIGHT - PANEL_HEIGHT
 INVENTORY_WIDTH = 50
 LEVEL_SCREEN_WIDTH = 40
+CHARACTER_SCREEN_WIDTH = 30
 
 # message log
 MSG_X = BAR_WIDTH + 2
@@ -37,6 +38,7 @@ EXIT_GAME = 2
 DIDNT_TAKE_TURN = 'didnt_take_turn'
 SHOW_INVENTORY = 'show_inventory'
 DROP_ITEM = 'drop_item'
+SHOW_STATUS = 'show_status'
 
 # 
 MAX_ITEMS = 26

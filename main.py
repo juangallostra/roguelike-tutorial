@@ -119,6 +119,12 @@ def main(renderer, game_map, player, logger, turn_based=True):
             )
             if chosen_item is not None:
                 chosen_item.drop(player.inventory, game_map, player)
+        elif player_action == SHOW_STATUS:
+            level_up_xp = LEVEL_UP_BASE + player.level * LEVEL_UP_FACTOR
+            renderer.msgbox('Character Information\n\nLevel: ' + str(player.level) + '\nExperience: ' + str(player.fighter.xp) +
+                '\nExperience to level up: ' + str(level_up_xp) + '\n\nMaximum HP: ' + str(player.fighter.max_hp) +
+                '\nAttack: ' + str(player.fighter.power) + '\nDefense: ' + str(player.fighter.defense), CHARACTER_SCREEN_WIDTH)
+
         if key.vk == tcod.KEY_ENTER and key.lalt:
             #Alt+Enter: toggle fullscreen
             tcod.console_set_fullscreen(not tcod.console_is_fullscreen())

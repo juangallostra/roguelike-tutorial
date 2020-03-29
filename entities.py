@@ -310,6 +310,9 @@ class MainPlayer(BaseObject):
                 if keypress.c == ord('d'):
                     # show the inventory; if an item is selected, drop it
                     return DROP_ITEM
+                if keypress.c == ord('c'):
+                    # show character information
+                    return SHOW_STATUS
         return DIDNT_TAKE_TURN
 
     def move_or_attack(self, dx, dy, game_map):
