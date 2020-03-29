@@ -1,4 +1,4 @@
-import libtcodpy as tcod
+import tcodpy as tcod
 from constants import *
 import math
 import textwrap
@@ -273,6 +273,25 @@ class MainPlayer(BaseObject):
         # Only handle game key presses if playing
         if game_state == PLAYING:
             # movement keys
+            # DIAGONAL MOVEMENT
+            # if keypress.vk == tcod.KEY_UP or keypress.vk == tcod.KEY_KP8:
+            #     self.move_or_attack(0, -1)
+            # elif keypress.vk == tcod.KEY_DOWN or keypress.vk == tcod.KEY_KP2:
+            #     self.move_or_attack(0, 1)
+            # elif keypress.vk == tcod.KEY_LEFT or keypress.vk == tcod.KEY_KP4:
+            #     self.move_or_attack(-1, 0)
+            # elif keypress.vk == tcod.KEY_RIGHT or keypress.vk == tcod.KEY_KP6:
+            #     self.move_or_attack(1, 0)
+            # elif keypress.vk == tcod.KEY_HOME or keypress.vk == tcod.KEY_KP7:
+            #     self.move_or_attack(-1, -1)
+            # elif keypress.vk == tcod.KEY_PAGEUP or keypress.vk == tcod.KEY_KP9:
+            #     self.move_or_attack(1, -1)
+            # elif keypress.vk == tcod.KEY_END or keypress.vk == tcod.KEY_KP1:
+            #     self.move_or_attack(-1, 1)
+            # elif keypress.vk == tcod.KEY_PAGEDOWN or keypress.vk == tcod.KEY_KP3:
+            #     self.move_or_attack(1, 1)
+            # elif keypress.vk == tcod.KEY_KP5:
+            #     pass  #do nothing ie wait for the monster to come to you
             if keypress.vk == tcod.KEY_UP:
                 self.move_or_attack(0, -1, game_map)
                 game_map.fov_recompute = True
@@ -467,7 +486,7 @@ def target_tile(
         if (mouse.lbutton_pressed and tcod.map_is_in_fov(game_map.fov_map, x, y) and
             (max_range is None or player.distance(x, y) <= max_range)):
             return (x, y)
-        if mouse.rbutton_pressed or key.vk == tcod.KEY_ESCAPE:
+        if mouse.rbutton_pressed or keypress.vk == tcod.KEY_ESCAPE:
             return (None, None)  # cancel if the player right-clicked or pressed Escape
 
 def target_monster(**kwargs):
