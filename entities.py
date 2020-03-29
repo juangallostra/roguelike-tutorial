@@ -1,4 +1,4 @@
-import tcodpy as tcod
+import libtcodpy as tcod
 from constants import *
 import math
 import textwrap
@@ -486,7 +486,7 @@ def target_tile(
         if (mouse.lbutton_pressed and tcod.map_is_in_fov(game_map.fov_map, x, y) and
             (max_range is None or player.distance(x, y) <= max_range)):
             return (x, y)
-        if mouse.rbutton_pressed or keypress.vk == tcod.KEY_ESCAPE:
+        if mouse.rbutton_pressed or key.vk == tcod.KEY_ESCAPE:
             return (None, None)  # cancel if the player right-clicked or pressed Escape
 
 def target_monster(**kwargs):
