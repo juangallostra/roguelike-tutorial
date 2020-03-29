@@ -361,7 +361,7 @@ def monster_death(monster):
     # transform it into a nasty corpse! it doesn't block, can't be
     # attacked and doesn't move
     if monster.logger:
-        monster.logger.log_message(monster.name.capitalize() + ' is dead!')
+        monster.logger.log_message('The ' + monster.name.capitalize() + ' is dead! You gain ' + str(monster.fighter.xp) + ' experience points.', tcod.orange)
 
     monster.set_char('%')
     monster.set_color(tcod.dark_red)
