@@ -83,6 +83,7 @@ class BaseObject():
     def is_player(self):
         return False
 
+
 ## Components
 class Fighter():
     # Combat-related properties and methods (monster, player, NPC).
@@ -109,7 +110,7 @@ class Fighter():
     
     def attack(self, target, player=None):
         # if there is no player, assume the target is the player
-        if player is None:
+        if player is None and target.is_player():
             player = target
         # a simple formula for attack damage
         damage = self.power - target.fighter.defense
@@ -130,6 +131,7 @@ class Fighter():
         self.hp += amount
         if self.hp > self.max_hp:
             self.hp = self.max_hp
+
 
 class BasicMonster():
     def __init__(self):
@@ -262,6 +264,7 @@ class MainPlayer(BaseObject):
         self.state = PLAYING # initial game state
         # inventory
         self.inventory = []
+        self.level = 1
     
     def is_player(self):
         return True
@@ -327,6 +330,18 @@ class MainPlayer(BaseObject):
         else:
             self.move(dx, dy, game_map)
             game_map.fov_recompute = True
+    
+    def check_level_up(self):
+        # see if the player's experience is enough to level-up
+        level_up_xp = LEVEL_UP_BASE + self.level * LEVEL_UP_FACTOR
+        if self.fighter.xp >= level_up_xp:
+            # it is! level up
+            self.level += 1
+            self.fighter.xp -= level_up_xp
+            self.logger.log_message('Your battle skills grow stronger! You reached level ' + str(self.level) + '!', tcod.yellow)
+            return True
+        return False
+
 
 # death functions
 def player_death(player):

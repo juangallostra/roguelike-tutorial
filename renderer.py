@@ -113,6 +113,21 @@ class RenderScreen():
     def msgbox(self, text, width=50):
         self.menu(text, [], width)  #use menu() as a sort of "message box"
 
+    def render_level_up(self, player):
+        choice = None
+        while choice == None:  #keep asking until a choice is made
+            choice = self.menu('Level up! Choose a stat to raise:\n',
+                ['Constitution (+20 HP, from ' + str(player.fighter.max_hp) + ')',
+                'Strength (+1 attack, from ' + str(player.fighter.power) + ')',
+                'Agility (+1 defense, from ' + str(player.fighter.defense) + ')'], LEVEL_SCREEN_WIDTH)
+        if choice == 0:
+            player.fighter.max_hp += 20
+            player.fighter.hp += 20
+        elif choice == 1:
+            player.fighter.power += 1
+        elif choice == 2:
+            player.fighter.defense += 1
+
     def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
         # render a bar (HP, experience, etc). 
         # first calculate the width of the bar

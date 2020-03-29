@@ -155,6 +155,10 @@ def main(renderer, game_map, player, logger, turn_based=True):
         game_state = player.state
         names_under_mouse = get_names_under_mouse(mouse, game_map)
         renderer.render_all(objects, game_map, names_under_mouse, show_map_chars=False)
+        # check level up
+        if player.check_level_up():
+            renderer.render_level_up(player)
+
     save_game(game_map, game_state, player, logger)
 
 def save_game(game_map, game_state, player, logger):
