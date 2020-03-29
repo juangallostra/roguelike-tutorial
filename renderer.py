@@ -89,7 +89,7 @@ class RenderScreen():
             game_map.fov_map,
             element.get_x_position(),
             element.get_y_position()
-        ):
+        ) or (element.always_visible and game_map.map[element.get_x_position()][element.get_y_position()].explored):
             # set the color and then draw the character that represents this object at its position
             tcod.console_set_default_foreground(self._con, element.get_color())
             tcod.console_put_char(
@@ -234,7 +234,7 @@ class RenderScreen():
                             tcod.console_set_char_background(self._con, x, y, C_LIGHT_GROUND, tcod.BKGND_SET)
                     game_map.map[x][y].explored = True
     
-    def render_gui(self, player, names_under_mouse):
+    def render_gui(self, player, names_under_mouse, active_level):
         # show the player's stats
         tcod.console_set_default_foreground(self._con, tcod.white)
 
@@ -252,6 +252,8 @@ class RenderScreen():
         #show the player's stats
         self.render_bar(1, 1, BAR_WIDTH, 'HP', player.fighter.hp, player.fighter.max_hp,
             tcod.light_red, tcod.darker_red)
+        tcod.console_print_ex(self._panel, 1, 3, tcod.BKGND_NONE, tcod.LEFT,
+            'Dungeon level ' + str(active_level))
         # display names of objects under the mouse
         tcod.console_set_default_foreground(self._panel, tcod.light_gray)
         tcod.console_print_ex(self._panel, 1, 0, tcod.BKGND_NONE, tcod.LEFT, names_under_mouse)
@@ -276,7 +278,7 @@ class RenderScreen():
         self.render_map(game_map, player, show_chars=show_map_chars)
         self.render_objects(objects, game_map)
         tcod.console_blit(self._con, 0, 0, self._width, self._height, 0, 0, 0)
-        self.render_gui(player, names_under_mouse)
+        self.render_gui(player, names_under_mouse, game_map.active_level)
         # blit the contents of "panel" gui to the root console
         tcod.console_blit(self._panel, 0, 0, self._width, self._panel_height, 0, 0, PANEL_Y)
         tcod.console_flush()

@@ -147,7 +147,8 @@ class GameMap():
                         'Healing Potion', 
                         tcod.violet, 
                         logger=self.logger,
-                        item=item_component
+                        item=item_component,
+                        always_visible=True
                     )
                 elif rn < (70+10):
                     # create a lightning bolt scroll (15% chance)
@@ -159,7 +160,8 @@ class GameMap():
                         'scroll of lightning bolt',
                         tcod.light_yellow,
                         logger=self.logger,
-                        item=item_component
+                        item=item_component,
+                        always_visible=True
                     )
                 elif rn < (70+10+10):
                     # create a fireball scroll (10% chance)
@@ -171,7 +173,8 @@ class GameMap():
                         'scroll of fireball', 
                         tcod.dark_flame,
                         logger=self.logger,
-                        item=item_component)
+                        item=item_component,
+                        always_visible=True)
                 else:
                     # create a confuse scroll (15% chance)
                     item_component = Item(use_function=cast_confuse)
@@ -182,7 +185,8 @@ class GameMap():
                         'scroll of confusion', 
                         tcod.light_blue,
                         logger=self.logger,
-                        item=item_component
+                        item=item_component,
+                        always_visible=True
                     )
  
                 self.map_objects[level].append(item)

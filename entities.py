@@ -9,23 +9,25 @@ DOWN = 'down'
 ## Base entity
 class BaseObject():
     def __init__(
-        self, 
-        x, 
-        y, 
-        char, 
-        name, 
-        color=tcod.white, 
-        blocks=False, 
-        fighter=None, 
-        ai=None, 
+        self,
+        x,
+        y,
+        char,
+        name,
+        color=tcod.white,
+        blocks=False,
+        fighter=None,
+        ai=None,
         logger=None,
-        item=None
+        item=None,
+        always_visible=False
     ):
         self.name = name
         self._char = char
         self._x = x
         self._y = y
         self.blocks = blocks
+        self.always_visible = always_visible
         self._color = color
         # Add components
         self.fighter = fighter
