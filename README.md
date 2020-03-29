@@ -6,7 +6,7 @@ The tutorial can be found [here](http://www.roguebasin.com/index.php?title=Compl
 
 ## Development status
 
-I'm currently on [Part 11](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_11).
+I'm currently on [Part 12](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_12).
 
 
 #### 22/03/2020
@@ -41,6 +41,11 @@ I'm currently on [Part 11](http://www.roguebasin.com/index.php?title=Complete_Ro
 
 * [Part 10](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_10)
 
+#### 29/03/2020
+
+* [Part 11](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_11)
+
+
 ## List of modifications
 
 Below you can find a list of things that I have done, up to he point were I am currently, different from the tutorial:
@@ -50,7 +55,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 - Instead of each object drawing and clearing itself, rendering is handled by an independent class (`Renderer`).
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
 - The game map is a class instead of a list of lists.
-- The dungeon has more than one level (it enables having `N` levels). Change level by using `z` to go up and `x` to go down when on a stair tile.
+- The dungeon levels are all created when the game starts instead of generating them on the go when the player changes level. This allows the user to move freely between levels, although it comes at the cost of using more memory.
 - Enable loading custom tilesets. This is covered in the extras section.
 
 ## TODO List
