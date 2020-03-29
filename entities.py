@@ -95,7 +95,7 @@ class Fighter():
         self.death_function = death_function
         self.owner = None
     
-    def take_damage(self, damage):
+    def take_damage(self, damage, player):
         # apply damage if possible
         if damage > 0:
             self.hp -= damage
@@ -104,8 +104,13 @@ class Fighter():
             if self.death_function is not None:
                 self.death_function(self.owner)
             self.hp = 0
+            if self.owner != player:  # yield experience to the player
+                player.fighter.xp += self.xp
     
-    def attack(self, target):
+    def attack(self, target, player=None):
+        # if there is no player, assume the target is the player
+        if player is None:
+            player = target
         # a simple formula for attack damage
         damage = self.power - target.fighter.defense
  
@@ -115,7 +120,7 @@ class Fighter():
                 self.owner.name.capitalize() + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.'
             )
             # make the target take some damage
-            target.fighter.take_damage(damage)
+            target.fighter.take_damage(damage, player)
         else:
             self.owner.logger.log_message(
                 self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
@@ -318,7 +323,7 @@ class MainPlayer(BaseObject):
  
         # attack if target found, move otherwise
         if target is not None:
-            self.fighter.attack(target)
+            self.fighter.attack(target, self)
         else:
             self.move(dx, dy, game_map)
             game_map.fov_recompute = True
@@ -371,7 +376,7 @@ def cast_lighting(**kwargs):
     #zap it!
     player.logger.log_message('A lighting bolt strikes the ' + monster.name + ' with a loud thunder! The damage is '
         + str(LIGHTNING_DAMAGE) + ' hit points.', tcod.light_blue)
-    monster.fighter.take_damage(LIGHTNING_DAMAGE)
+    monster.fighter.take_damage(LIGHTNING_DAMAGE, player)
 
 def cast_confuse(**kwargs):
     # find closest enemy in-range and confuse it
@@ -414,7 +419,7 @@ def cast_fireball(**kwargs):
     for obj in game_map.level_objects:  #damage every fighter in range, including the player
         if obj.distance(x, y) <= FIREBALL_RADIUS and obj.fighter:
             player.logger.log_message('The ' + obj.name + ' gets burned for ' + str(FIREBALL_DAMAGE) + ' hit points.', tcod.orange)
-            obj.fighter.take_damage(FIREBALL_DAMAGE)
+            obj.fighter.take_damage(FIREBALL_DAMAGE, player)
 
 ## Helper methods
 def target_tile(
