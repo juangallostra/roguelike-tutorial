@@ -86,9 +86,10 @@ class BaseObject():
 ## Components
 class Fighter():
     # Combat-related properties and methods (monster, player, NPC).
-    def __init__(self, hp, defense, power, death_function=None):
+    def __init__(self, hp, defense, power, xp=0, death_function=None):
         self.max_hp = hp
         self.hp = hp
+        self.xp = xp
         self.defense = defense
         self.power = power
         self.death_function = death_function
