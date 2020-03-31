@@ -81,6 +81,8 @@ class GameMap():
         # item and monster chances
         self._monster_chances = {ORC: 80, TROLL: 20}
         self._item_chances = {HEAL: 70, LIGHTNING: 10, FIREBALL: 10, CONFUSE: 10}
+        self._max_monsters = MAX_ROOM_MONSTERS
+        self._max_items = MAX_ROOM_ITEMS
 
     def closest_monster(self, max_range, player):
         # find closest enemy, up to a maximum range, and in the player's FOV
@@ -150,7 +152,37 @@ class GameMap():
         keys = list(chances_dict.keys())
         return keys[self.random_choice_index(chances)]
 
+    def from_dungeon_level(self, table, level):
+        # returns a value that depends on level. the table specifies what value occurs after each level, default is 0.
+        for (value, d_level) in reversed(table):
+            if level >= d_level:
+                return value
+        return 0
+
+    def update_item_chances(self, level): 
+        # maximum number of items per room
+        self._max_items = self.from_dungeon_level([[1, 1], [2, 4]], level)
+ 
+        # chance of each item (by default they have a chance of 0 at level 1, which then goes up)
+        self._item_chances = {}
+        self._item_chances[HEAL] = 35  # healing potion always shows up, even if all other items have 0 chance
+        self._item_chances[LIGHTNING] = self.from_dungeon_level([[25, 4]], level)
+        self._item_chances[FIREBALL] =  self.from_dungeon_level([[25, 6]], level)
+        self._item_chances[CONFUSE] =   self.from_dungeon_level([[10, 2]], level)
+
+    def update_monster_chances(self, level):
+        # update chances to level
+        # maximum number of monsters per room
+        self._max_monsters = self.from_dungeon_level([[2, 1], [3, 4], [5, 6]], level)
+ 
+        # chance of each monster
+        self._monster_chances = {}
+        self._monster_chances[ORC] = 80  # orc always shows up, even if all other monsters have 0 chance
+        self._monster_chances[TROLL] = self.from_dungeon_level([[15, 3], [30, 5], [60, 7]], level)
+
+
     def place_objects_in_room(self, level, room):
+        self.update_item_chances(level)       
         # place objects
         # choose random number of items
         num_items = tcod.random_get_int(0, 0, MAX_ROOM_ITEMS)
