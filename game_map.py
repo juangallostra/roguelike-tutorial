@@ -76,7 +76,11 @@ class GameMap():
         # because if they are created before all tiles are blocked
         # the FOV algorithm doesn't work as expected
         self.fov_maps = None
-        self.fov_map = None 
+        self.fov_map = None
+
+        # item and monster chances
+        self._monster_chances = {ORC: 80, TROLL: 20}
+        self._item_chances = {HEAL: 70, LIGHTNING: 10, FIREBALL: 10, CONFUSE: 10}
 
     def closest_monster(self, max_range, player):
         # find closest enemy, up to a maximum range, and in the player's FOV
@@ -124,6 +128,28 @@ class GameMap():
     def get_height(self):
         return self._height
 
+    def random_choice_index(self, chances):  
+        # choose one option from list of chances, returning its index
+        # the dice will land on some number between 1 and the sum of the chances
+        dice = tcod.random_get_int(0, 1, sum(chances))
+ 
+        # go through all chances, keeping the sum so far
+        running_sum = 0
+        choice = 0
+        for w in chances:
+            running_sum += w
+ 
+            # see if the dice landed in the part that corresponds to this choice
+            if dice <= running_sum:
+                return choice
+            choice += 1
+
+    def random_choice(self, chances_dict):
+        # choose one option from dictionary of chances, returning its key
+        chances = chances_dict.values()
+        keys = list(chances_dict.keys())
+        return keys[self.random_choice_index(chances)]
+
     def place_objects_in_room(self, level, room):
         # place objects
         # choose random number of items
@@ -136,8 +162,8 @@ class GameMap():
  
             # only place it if the tile is not blocked
             if not self.is_blocked(x, y, self.map_objects[level]):
-                rn = tcod.random_get_int(0, 0, 100)
-                if  rn < 70:
+                choice = self.random_choice(self._item_chances)
+                if choice == HEAL:
                     # create a healing potion (70% chance)
                     item_component = Item(use_function=cast_heal)
                     item = BaseObject(
@@ -150,8 +176,8 @@ class GameMap():
                         item=item_component,
                         always_visible=True
                     )
-                elif rn < (70+10):
-                    # create a lightning bolt scroll (15% chance)
+                elif choice == LIGHTNING:
+                    # create a lightning bolt scroll (10% chance)
                     item_component = Item(use_function=cast_lighting)
                     item = BaseObject(
                         x,
@@ -163,7 +189,7 @@ class GameMap():
                         item=item_component,
                         always_visible=True
                     )
-                elif rn < (70+10+10):
+                elif choice == FIREBALL:
                     # create a fireball scroll (10% chance)
                     item_component = Item(use_function=cast_fireball)
                     item = BaseObject(
@@ -175,7 +201,7 @@ class GameMap():
                         logger=self.logger,
                         item=item_component,
                         always_visible=True)
-                else:
+                elif choice == CONFUSE:
                     # create a confuse scroll (15% chance)
                     item_component = Item(use_function=cast_confuse)
                     item = BaseObject(
@@ -200,7 +226,9 @@ class GameMap():
             x = tcod.random_get_int(0, room.x1 + 1, room.x2 - 1)
             y = tcod.random_get_int(0, room.y1 + 1, room.y2 - 1)
             if not self.is_blocked(x, y, self.map_objects[level]):
-                if tcod.random_get_int(0, 0, 100) < 80:  #80% chance of getting an orc
+                choice = self.random_choice(self._monster_chances)
+                if choice == ORC:
+                    # 80% chance of getting an orc
                     # create an orc
                     fighter_component = Fighter(hp=10, defense=0, power=3, xp=35, death_function=monster_death)
                     ai_component = BasicMonster()
@@ -216,7 +244,7 @@ class GameMap():
                         fighter=fighter_component,
                         ai=ai_component,
                         logger=self.logger)
-                else:
+                elif choice == TROLL:
                     # create a troll
                     fighter_component = Fighter(hp=16, defense=1, power=4, xp=100, death_function=monster_death)
                     ai_component = BasicMonster()

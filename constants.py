@@ -44,6 +44,16 @@ SHOW_STATUS = 'show_status'
 MAX_ITEMS = 26
 MAX_MENU_OPTIONS = 26
 
+# spawnable items
+HEAL = 'heal'
+LIGHTNING = 'lightning'
+FIREBALL = 'fireball'
+CONFUSE = 'confuse'
+
+# spawnable monsters
+ORC = 'orc'
+TROLL = 'troll'
+
 # items
 HEAL_AMOUNT = 4
 LIGHTNING_DAMAGE = 20
