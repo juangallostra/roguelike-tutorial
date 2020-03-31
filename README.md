@@ -64,6 +64,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## TODO List
 
+- [ ] Make infinite number of dungeon levels.
 - [ ] Move strings to constants (key codes, object names, etc.).
 - [ ] Add method in objects to relocate them in array so that they are drawn in the correct order.
 - [ ] Check real time combat.
