@@ -151,7 +151,13 @@ class RenderScreen():
         if len(inventory) == 0:
             options = ['Inventory is empty.']
         else:
-            options = [item.name for item in inventory]
+            options = []
+            for item in inventory:
+                text = item.name
+                # show additional information, in case it's equipped
+                if item.equipment and item.equipment.is_equipped:
+                    text = text + ' (on ' + item.equipment.slot + ')'
+                options.append(text)
  
         index = self.menu(header, options, INVENTORY_WIDTH)
         #if an item was chosen, return it
