@@ -218,6 +218,9 @@ class Item():
         inventory.remove(self.owner)
         self.owner._x = player.get_x_position()
         self.owner._y = player.get_y_position()
+        # special case: if the object has the Equipment component, dequip it before dropping
+        if self.owner.equipment:
+            self.owner.equipment.dequip()
         player.logger.log_message('You dropped a ' + self.owner.name + '.', tcod.yellow)
 
     def use(self, inventory, **kwargs):
