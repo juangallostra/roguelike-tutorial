@@ -49,6 +49,7 @@ HEAL = 'heal'
 LIGHTNING = 'lightning'
 FIREBALL = 'fireball'
 CONFUSE = 'confuse'
+SWORD = 'sword'
 
 # spawnable monsters
 ORC = 'orc'

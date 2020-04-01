@@ -80,7 +80,7 @@ class GameMap():
 
         # item and monster chances
         self._monster_chances = {ORC: 80, TROLL: 20}
-        self._item_chances = {HEAL: 70, LIGHTNING: 10, FIREBALL: 10, CONFUSE: 10}
+        self._item_chances = {HEAL: 70, LIGHTNING: 10, FIREBALL: 10, CONFUSE: 10, SWORD:25}
         self._max_monsters = MAX_ROOM_MONSTERS
         self._max_items = MAX_ROOM_ITEMS
 
@@ -166,6 +166,7 @@ class GameMap():
         # chance of each item (by default they have a chance of 0 at level 1, which then goes up)
         self._item_chances = {}
         self._item_chances[HEAL] = 35  # healing potion always shows up, even if all other items have 0 chance
+        self._item_chances[SWORD] = 25
         self._item_chances[LIGHTNING] = self.from_dungeon_level([[25, 4]], level)
         self._item_chances[FIREBALL] =  self.from_dungeon_level([[25, 6]], level)
         self._item_chances[CONFUSE] =   self.from_dungeon_level([[10, 2]], level)
@@ -246,7 +247,19 @@ class GameMap():
                         item=item_component,
                         always_visible=True
                     )
- 
+                elif choice == SWORD:
+                    #create a sword
+                    equipment_component = Equipment(slot='right hand')
+                    item = BaseObject(
+                        x, 
+                        y, 
+                        '/', 
+                        'sword', 
+                        tcod.sky,
+                        logger=self.logger,
+                        equipment=equipment_component,
+                        always_visible=True)
+
                 self.map_objects[level].append(item)
                 # item.send_to_back()  #items appear below other objects
 

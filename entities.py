@@ -225,6 +225,11 @@ class Item():
         # show_map_chars = kwargs['show_map_chars']
         # mouse = kwargs['mouse']
         # key = kwargs['key']
+        
+        # special case: if the object has the Equipment component, the "use" action is to equip/dequip
+        if self.owner.equipment:
+            self.owner.equipment.toggle_equip()
+            return
         # just call the "use_function" if it is defined
         if self.use_function is None:
             self.owner.logger.log_message('The ' + self.owner.name + ' cannot be used.')
@@ -251,13 +256,13 @@ class Equipment():
     def equip(self):
         # equip object and show a message about it
         self.is_equipped = True
-        self.owner.logger.message('Equipped ' + self.owner.name + ' on ' + self.slot + '.', tcod.light_green)
+        self.owner.logger.log_message('Equipped ' + self.owner.name + ' on ' + self.slot + '.', tcod.light_green)
  
     def dequip(self):
         # dequip object and show a message about it
         if not self.is_equipped: return
         self.is_equipped = False
-        self.owner.logger.message('Dequipped ' + self.owner.name + ' from ' + self.slot + '.', tcod.light_yellow)
+        self.owner.logger.log_message('Dequipped ' + self.owner.name + ' from ' + self.slot + '.', tcod.light_yellow)
 
 
 class Logger():
