@@ -50,7 +50,7 @@ LIGHTNING = 'lightning'
 FIREBALL = 'fireball'
 CONFUSE = 'confuse'
 SWORD = 'sword'
-
+SHIELD = 'shield'
 # spawnable monsters
 ORC = 'orc'
 TROLL = 'troll'

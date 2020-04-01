@@ -44,7 +44,7 @@ def new_game(logger, renderer):
     player_pos = game_map.player_initial_pos
     
     # instantiate player
-    fighter_component = Fighter(hp=30, defense=2, power=5, death_function=player_death)
+    fighter_component = Fighter(hp=30, defense=2, power=2, death_function=player_death)
     player = MainPlayer(
         player_pos[0],
         player_pos[1],
@@ -55,7 +55,12 @@ def new_game(logger, renderer):
         blocks=True,
         fighter=fighter_component,
         logger=logger)
-    
+    # initial equipment: a dagger
+    equipment_component = Equipment(slot='right hand', power_bonus=2)
+    obj = BaseObject(player.get_x_position(), player.get_y_position, '-', 'dagger', tcod.sky,logger=logger, equipment=equipment_component)
+    player.inventory.append(obj)
+    equipment_component.equip(player.inventory)
+    obj.always_visible = True
     # Greet the player
 
     logger.log_message(

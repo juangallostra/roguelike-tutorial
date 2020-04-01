@@ -166,7 +166,8 @@ class GameMap():
         # chance of each item (by default they have a chance of 0 at level 1, which then goes up)
         self._item_chances = {}
         self._item_chances[HEAL] = 35  # healing potion always shows up, even if all other items have 0 chance
-        self._item_chances[SWORD] = 25
+        self._item_chances[SWORD] = 10
+        self._item_chances[SHIELD] = 10
         self._item_chances[LIGHTNING] = self.from_dungeon_level([[25, 4]], level)
         self._item_chances[FIREBALL] =  self.from_dungeon_level([[25, 6]], level)
         self._item_chances[CONFUSE] =   self.from_dungeon_level([[10, 2]], level)
@@ -186,7 +187,7 @@ class GameMap():
         self.update_item_chances(level)       
         # place objects
         # choose random number of items
-        num_items = tcod.random_get_int(0, 0, MAX_ROOM_ITEMS)
+        num_items = tcod.random_get_int(0, 0, self._max_items)
  
         for i in range(num_items):
             # choose random spot for this item
@@ -248,8 +249,8 @@ class GameMap():
                         always_visible=True
                     )
                 elif choice == SWORD:
-                    #create a sword
-                    equipment_component = Equipment(slot='right hand')
+                    # create a sword
+                    equipment_component = Equipment(slot='right hand', power_bonus=3)
                     item = BaseObject(
                         x, 
                         y, 
@@ -258,13 +259,26 @@ class GameMap():
                         tcod.sky,
                         logger=self.logger,
                         equipment=equipment_component,
-                        always_visible=True)
+                        always_visible=True)            
+                elif choice == SHIELD:
+                    # create a shield
+                    equipment_component = Equipment(slot='left hand', defense_bonus=1)
+                    item = BaseObject(
+                        x,
+                        y,
+                        '[',
+                        'shield',
+                        tcod.darker_orange,
+                        logger=self.logger,
+                        equipment=equipment_component,
+                        always_visible=True
+                    )
 
                 self.map_objects[level].append(item)
                 # item.send_to_back()  #items appear below other objects
 
         # choose random number of monsters
-        num_monsters = tcod.random_get_int(0, 0, MAX_ROOM_MONSTERS)
+        num_monsters = tcod.random_get_int(0, 0, self._max_monsters)
  
         for i in range(num_monsters):
             # choose random spot for this monster
