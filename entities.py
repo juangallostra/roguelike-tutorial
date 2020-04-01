@@ -20,6 +20,7 @@ class BaseObject():
         ai=None,
         logger=None,
         item=None,
+        equipment=None,
         always_visible=False
     ):
         self.name = name
@@ -40,6 +41,13 @@ class BaseObject():
 
         self.item = item # let the item component know who owns it
         if self.item:
+            self.item.owner = self
+        
+        self.equipment = equipment
+        if self.equipment:  # let the Equipment component know who owns it
+            self.equipment.owner = self
+            # there must be an Item component for the Equipment component to work properly
+            self.item = Item()
             self.item.owner = self
 
         self.logger = logger
@@ -223,6 +231,33 @@ class Item():
         else:
             if self.use_function(**kwargs) != 'cancelled':
                 inventory.remove(self.owner)  # destroy after use, unless it was cancelled for some reason
+
+
+class Equipment():
+    # An object that can be equipped, yielding bonuses. 
+    # Automatically adds the Item component.
+    def __init__(self, slot):
+        self.owner = None
+        self.slot = slot
+        self.is_equipped = False
+ 
+    def toggle_equip(self):  
+        # toggle equip/dequip status
+        if self.is_equipped:
+            self.dequip()
+        else:
+            self.equip()
+ 
+    def equip(self):
+        # equip object and show a message about it
+        self.is_equipped = True
+        self.owner.logger.message('Equipped ' + self.owner.name + ' on ' + self.slot + '.', tcod.light_green)
+ 
+    def dequip(self):
+        # dequip object and show a message about it
+        if not self.is_equipped: return
+        self.is_equipped = False
+        self.owner.logger.message('Dequipped ' + self.owner.name + ' from ' + self.slot + '.', tcod.light_yellow)
 
 
 class Logger():
