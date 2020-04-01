@@ -53,7 +53,7 @@ I am now building a more complete game on top of that.
 
 ### 01/04/2020
 
-*[Part 13](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_13)
+* [Part 13](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_13)
 
 
 ## List of modifications
