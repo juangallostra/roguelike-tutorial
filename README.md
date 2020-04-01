@@ -6,7 +6,9 @@ The tutorial can be found [here](http://www.roguebasin.com/index.php?title=Compl
 
 ## Development status
 
-I'm currently on [Part 13](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_13).
+I have already finished the last part of the tutorial ([Part 13](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_13)).
+
+I am now building a more complete game on top of that.
 
 
 #### 22/03/2020
@@ -49,6 +51,10 @@ I'm currently on [Part 13](http://www.roguebasin.com/index.php?title=Complete_Ro
 
 * [Part 12](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_12)
 
+### 01/04/2020
+
+*[Part 13](http://www.roguebasin.com/index.php?title=Complete_Roguelike_Tutorial,_using_python3%2Blibtcod,_part_13)
+
 
 ## List of modifications
 
@@ -60,7 +66,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 - The player class is in charge of handling its key events. It receives the key pressed and decides how to act.
 - The game map is a class instead of a list of lists.
 - The dungeon levels are all created when the game starts instead of generating them on the go when the player changes level. This allows the user to move freely between levels, although it comes at the cost of using more memory.
-- Enable loading custom tilesets. This is covered in the extras section.
+- Enable loading custom tilesets. This is covered in the extras section of the tutorial.
 
 ## TODO List
 
