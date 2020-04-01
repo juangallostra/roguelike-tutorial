@@ -68,6 +68,7 @@ Below you can find a list of things that I have done, up to he point were I am c
 - The dungeon levels are all created when the game starts instead of generating them on the go when the player changes level. This allows the user to move freely between levels, although it comes at the cost of using more memory.
 - Enable loading custom tilesets. This is covered in the extras section of the tutorial.
 
+
 ## TODO List
 
 - [ ] Make infinite number of dungeon levels.
@@ -84,3 +85,10 @@ Below you can find a list of things that I have done, up to he point were I am c
 - [x] Add stairs to move between dungeon levels.
 - [x] Fix field of view.
 - [x] Only show objects that are in the current level.
+
+
+## WISH List
+
+- [ ] Add more enemies
+- [ ] Add more equipment
+- [ ] Add functionality to make enemies drop items when killed
