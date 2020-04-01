@@ -121,12 +121,12 @@ class RenderScreen():
                 'Strength (+1 attack, from ' + str(player.fighter.power) + ')',
                 'Agility (+1 defense, from ' + str(player.fighter.defense) + ')'], LEVEL_SCREEN_WIDTH)
         if choice == 0:
-            player.fighter.max_hp += 20
+            player.fighter.base_max_hp += 20
             player.fighter.hp += 20
         elif choice == 1:
-            player.fighter.power += 1
+            player.fighter.base_power += 1
         elif choice == 2:
-            player.fighter.defense += 1
+            player.fighter.base_defense += 1
 
     def render_bar(self, x, y, total_width, name, value, maximum, bar_color,  back_color):
         # render a bar (HP, experience, etc). 

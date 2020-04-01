@@ -96,14 +96,39 @@ class BaseObject():
 class Fighter():
     # Combat-related properties and methods (monster, player, NPC).
     def __init__(self, hp, defense, power, xp=0, death_function=None):
-        self.max_hp = hp
+        self.base_max_hp = hp
         self.hp = hp
         self.xp = xp
-        self.defense = defense
-        self.power = power
+        self.base_defense = defense
+        self.base_power = power
         self.death_function = death_function
         self.owner = None
     
+    @property
+    def power(self):
+        bonuses = sum(equipment.power_bonus for equipment in self.get_all_equipped(self.owner)) 
+        return self.base_power + bonuses
+    
+    @property
+    def defense(self):  #return actual defense, by summing up the bonuses from all equipped items
+        bonus = sum(equipment.defense_bonus for equipment in self.get_all_equipped(self.owner))
+        return self.base_defense + bonus
+ 
+    @property
+    def max_hp(self):  #return actual max_hp, by summing up the bonuses from all equipped items
+        bonus = sum(equipment.max_hp_bonus for equipment in self.get_all_equipped(self.owner))
+        return self.base_max_hp + bonus
+    
+    def get_all_equipped(self, owner):  #returns a list of equipped items
+        if owner.is_player():
+            equipped_list = []
+            for item in owner.inventory:
+                if item.equipment and item.equipment.is_equipped:
+                    equipped_list.append(item.equipment)
+            return equipped_list
+        else:
+            return []  #other objects have no equipment
+
     def take_damage(self, damage, player):
         # apply damage if possible
         if damage > 0:
@@ -248,10 +273,14 @@ class Item():
 class Equipment():
     # An object that can be equipped, yielding bonuses. 
     # Automatically adds the Item component.
-    def __init__(self, slot):
+    def __init__(self, slot, power_bonus=0, defense_bonus=0, max_hp_bonus=0):
         self.owner = None
         self.slot = slot
         self.is_equipped = False
+        # Equipment bonuses
+        self.power_bonus = power_bonus
+        self.defense_bonus = defense_bonus
+        self.max_hp_bonus = max_hp_bonus
 
     def get_equipped_in_slot(self, slot, inventory):  
         # returns the equipment in a slot, or None if it's empty
