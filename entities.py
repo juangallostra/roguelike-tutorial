@@ -206,6 +206,10 @@ class Item():
             game_map.level_objects.remove(self.owner)
             game_map.map_objects[game_map.active_level].remove(self.owner)
             self.owner.logger.log_message('You picked up a ' + self.owner.name + '!', tcod.green)
+        # special case: automatically equip, if the corresponding equipment slot is unused
+        equipment = self.owner.equipment
+        if equipment and equipment.get_equipped_in_slot(equipment.slot, inventory) is None:
+                equipment.equip(inventory)
 
     def drop(self, inventory, game_map, player):
         #add to the map and remove from the player's inventory. also, place it at the player's coordinates
@@ -228,7 +232,7 @@ class Item():
         
         # special case: if the object has the Equipment component, the "use" action is to equip/dequip
         if self.owner.equipment:
-            self.owner.equipment.toggle_equip()
+            self.owner.equipment.toggle_equip(inventory)
             return
         # just call the "use_function" if it is defined
         if self.use_function is None:
@@ -245,16 +249,27 @@ class Equipment():
         self.owner = None
         self.slot = slot
         self.is_equipped = False
- 
-    def toggle_equip(self):  
+
+    def get_equipped_in_slot(self, slot, inventory):  
+        # returns the equipment in a slot, or None if it's empty
+        for obj in inventory:
+            if obj.equipment and obj.equipment.slot == slot and obj.equipment.is_equipped:
+                return obj.equipment
+        return None
+
+    def toggle_equip(self, inventory):  
         # toggle equip/dequip status
         if self.is_equipped:
             self.dequip()
         else:
-            self.equip()
+            self.equip(inventory)
  
-    def equip(self):
+    def equip(self, inventory):
         # equip object and show a message about it
+        # if the slot is already being used, dequip whatever is there first
+        old_equipment = self.get_equipped_in_slot(self.slot, inventory)
+        if old_equipment is not None:
+            old_equipment.dequip()
         self.is_equipped = True
         self.owner.logger.log_message('Equipped ' + self.owner.name + ' on ' + self.slot + '.', tcod.light_green)
  
