@@ -64,6 +64,12 @@ FIREBALL_RADIUS = 3
 FIREBALL_DAMAGE = 12
 CONFUSE_RANGE = 5
 
+# Equipment slots
+RIGHT_HAND = 'right hand'
+LEFT_HAND = 'left hand'
+HEAD = 'head'
+BODY = 'body'
+
 # experience and level-ups
 LEVEL_UP_BASE = 200
 LEVEL_UP_FACTOR = 150

@@ -56,7 +56,7 @@ def new_game(logger, renderer):
         fighter=fighter_component,
         logger=logger)
     # initial equipment: a dagger
-    equipment_component = Equipment(slot='right hand', power_bonus=2)
+    equipment_component = Equipment(slot=RIGHT_HAND, power_bonus=2)
     obj = BaseObject(player.get_x_position(), player.get_y_position, '-', 'dagger', tcod.sky,logger=logger, equipment=equipment_component)
     player.inventory.append(obj)
     equipment_component.equip(player.inventory)

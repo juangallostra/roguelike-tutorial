@@ -159,13 +159,14 @@ class Fighter():
             self.owner.logger.log_message(
                 self.owner.name.capitalize() + ' attacks ' + target.name + ' but it has no effect!'
             )
+
     def heal(self, amount):
         # heal by the given amount, without going over the maximum
         self.hp += amount
         if self.hp > self.max_hp:
             self.hp = self.max_hp
 
-
+# Enemy AI Components. This classes define the behavior of enemys
 class BasicMonster():
     def __init__(self):
         self.owner = None

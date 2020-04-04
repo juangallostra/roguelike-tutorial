@@ -153,7 +153,8 @@ class GameMap():
         return keys[self.random_choice_index(chances)]
 
     def from_dungeon_level(self, table, level):
-        # returns a value that depends on level. the table specifies what value occurs after each level, default is 0.
+        # returns a value that depends on level. 
+        # the table specifies what value occurs after each level, default is 0.
         for (value, d_level) in reversed(table):
             if level >= d_level:
                 return value
@@ -161,7 +162,8 @@ class GameMap():
 
     def update_item_chances(self, level): 
         # maximum number of items per room
-        self._max_items = self.from_dungeon_level([[1, 1], [2, 4]], level)
+        # Table is: [num_items, level]
+        self._max_items = self.from_dungeon_level([[1, 0], [1, 1], [2, 2]], level)
  
         # chance of each item (by default they have a chance of 0 at level 1, which then goes up)
         self._item_chances = {}
@@ -175,7 +177,8 @@ class GameMap():
     def update_monster_chances(self, level):
         # update chances to level
         # maximum number of monsters per room
-        self._max_monsters = self.from_dungeon_level([[2, 1], [3, 4], [5, 6]], level)
+        # Table is: [num_monsters, level]
+        self._max_monsters = self.from_dungeon_level([[1, 0],[2, 1], [3, 4], [5, 6]], level)
  
         # chance of each monster
         self._monster_chances = {}
@@ -184,7 +187,6 @@ class GameMap():
 
 
     def place_objects_in_room(self, level, room):
-        self.update_item_chances(level)       
         # place objects
         # choose random number of items
         num_items = tcod.random_get_int(0, 0, self._max_items)
@@ -250,7 +252,7 @@ class GameMap():
                     )
                 elif choice == SWORD:
                     # create a sword
-                    equipment_component = Equipment(slot='right hand', power_bonus=3)
+                    equipment_component = Equipment(slot=RIGHT_HAND, power_bonus=3)
                     item = BaseObject(
                         x, 
                         y, 
@@ -262,7 +264,7 @@ class GameMap():
                         always_visible=True)            
                 elif choice == SHIELD:
                     # create a shield
-                    equipment_component = Equipment(slot='left hand', defense_bonus=1)
+                    equipment_component = Equipment(slot=LEFT_HAND, defense_bonus=1)
                     item = BaseObject(
                         x,
                         y,
@@ -296,7 +298,7 @@ class GameMap():
                         y,
                         # ORC_TILE,
                         'O',
-                        'orc',
+                        ORC,
                         # tcod.white,
                         tcod.desaturated_green,
                         blocks=True,
@@ -312,7 +314,7 @@ class GameMap():
                         y,
                         # TROLL_TILE,
                         'T',
-                        'troll',
+                        TROLL,
                         # tcod.white,
                         tcod.darker_green,
                         blocks=True,
@@ -360,6 +362,8 @@ class GameMap():
         # 3. Stairs
         # 4. FOV map (so that we can know which tiles let the light pass through)
         for level in range(self._levels):
+            self.update_item_chances(level)
+            self.update_monster_chances(level)
             # Activate that level
             self.change_level(level, only_tile_map=True)
             # Create a random dungeon
