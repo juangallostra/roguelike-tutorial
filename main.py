@@ -7,7 +7,7 @@ from renderer import RenderScreen
 from game_map import GameMap
 from tile_loader import *
 
-FONT_PATH = 'arial10x10.png'
+FONT_PATH = 'static/arial10x10.png'
 FONT_FLAGS = tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD
 
 def get_key_event(turn_based=None):

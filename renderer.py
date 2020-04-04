@@ -280,7 +280,7 @@ class RenderScreen():
         tcod.console_print_ex(self._panel, 1, 0, tcod.BKGND_NONE, tcod.LEFT, names_under_mouse)
 
     def render_main_menu(self):
-        img = tcod.image_load('menu_background.png')
+        img = tcod.image_load('static/menu_background.png')
         choice = EXIT_GAME
         while not tcod.console_is_window_closed():
             # show the background image, at twice the regular console resolution

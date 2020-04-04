@@ -1,7 +1,7 @@
 import libtcodpy as tcod
 
 # Tiles source image
-TILES_SOURCE = 'tiles10x10.png'
+TILES_SOURCE = 'static/tiles10x10.png'
 TILES_ROWS = 32
 TILES_COLS = 8
 
