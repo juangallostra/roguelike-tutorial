@@ -46,10 +46,11 @@ SWORD_TILE = {
 }
 
 def load_font(use_tiles=False):
+    # default font
     if not use_tiles:
         tcod.console_set_custom_font(FONT_PATH, FONT_FLAGS)
         return
-
+    # tileset
     tcod.console_set_custom_font(TILES_SOURCE, FONT_FLAGS, TILES_COLS, TILES_ROWS)
     a = OFFSET
     # The "y" is the row index, here we load the sixth row in the font file. Increase the "6" to load any new rows from the file
