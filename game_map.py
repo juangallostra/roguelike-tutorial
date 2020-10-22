@@ -1,6 +1,6 @@
 import libtcodpy as tcod
 from entities import *
-from tile_loader import ORC_TILE, TROLL_TILE
+from tile_loader import ORC_TILE, TROLL_TILE, HEALING_POTION_TILE, SWORD_TILE, SHIELD_TILE
 from config import USE_TILES
 
 
@@ -207,9 +207,9 @@ class GameMap():
                     item = BaseObject(
                         x, 
                         y, 
-                        '!', 
+                        HEALING_POTION_TILE[USE_TILES].code, 
                         'Healing Potion', 
-                        tcod.violet, 
+                        HEALING_POTION_TILE[USE_TILES].color, 
                         logger=self.logger,
                         item=item_component,
                         always_visible=True
@@ -258,9 +258,9 @@ class GameMap():
                     item = BaseObject(
                         x, 
                         y, 
-                        '/', 
+                        SWORD_TILE[USE_TILES].code, 
                         'sword', 
-                        tcod.sky,
+                        SWORD_TILE[USE_TILES].color,
                         logger=self.logger,
                         equipment=equipment_component,
                         always_visible=True)            
@@ -270,9 +270,9 @@ class GameMap():
                     item = BaseObject(
                         x,
                         y,
-                        '[',
+                        SHIELD_TILE[USE_TILES].code,
                         'shield',
-                        tcod.darker_orange,
+                        SHIELD_TILE[USE_TILES].color,
                         logger=self.logger,
                         equipment=equipment_component,
                         always_visible=True
@@ -298,10 +298,9 @@ class GameMap():
                     monster = BaseObject(
                         x,
                         y,
-                        ORC_TILE[USE_TILES],
+                        ORC_TILE[USE_TILES].code,
                         ORC,
-                        # tcod.white,
-                        tcod.desaturated_green,
+                        ORC_TILE[USE_TILES].color,
                         blocks=True,
                         fighter=fighter_component,
                         ai=ai_component,
@@ -313,10 +312,9 @@ class GameMap():
                     monster = BaseObject(
                         x,
                         y,
-                        TROLL_TILE[USE_TILES],
+                        TROLL_TILE[USE_TILES].code,
                         TROLL,
-                        # tcod.white,
-                        tcod.darker_green,
+                        TROLL_TILE[USE_TILES].color,
                         blocks=True,
                         fighter=fighter_component,
                         ai=ai_component,

@@ -1,4 +1,5 @@
 import libtcodpy as tcod
+from collections import namedtuple
 
 FONT_PATH = 'static/test_font.png'
 FONT_FLAGS = tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD
@@ -13,12 +14,36 @@ TILE_END_ROW = 15
 # The index of the first custom tile in the file we will load
 OFFSET = 256
 
+Tile = namedtuple('Tile', 'code color')
 # Give tiles a meaningful name
-PLAYER_TILE = { True: OFFSET + 5, False: '@'}
-ORC_TILE = { True: OFFSET + 11, False: 'O'}
-TROLL_TILE = { True: OFFSET + 13, False: 'T'}
-DAGGER_TILE = { True: '-', False: '-'}
-
+PLAYER_TILE = { 
+    True: Tile(code=OFFSET + 5, color=tcod.white), 
+    False: Tile(code='@', color=tcod.white)
+    }
+ORC_TILE = { 
+    True: Tile(code=OFFSET + 11, color=tcod.white),
+    False: Tile(code='O', color=tcod.desaturated_green)
+    }
+TROLL_TILE = { 
+    True: Tile(code=OFFSET + 13, color=tcod.white), 
+    False: Tile(code='T', color=tcod.darker_green)
+    }
+DAGGER_TILE = { 
+    True: Tile(code=OFFSET + TILES_COLS*4 + 10, color=tcod.white),
+    False: Tile(code='-', color=tcod.sky)
+    }
+HEALING_POTION_TILE = {
+    True: Tile(code=OFFSET + TILES_COLS*2 + 9, color=tcod.white),
+    False: Tile(code='!', color=tcod.violet)
+    }
+SHIELD_TILE = {
+    True: Tile(code=OFFSET + TILES_COLS*6 + 9, color=tcod.white),
+    False: Tile(code='[', color=tcod.dark_orange)
+}
+SWORD_TILE = {
+    True: Tile(code=OFFSET + TILES_COLS*4 + 6, color=tcod.white),
+    False: Tile(code='/', color=tcod.sky)
+}
 
 def load_font(use_tiles=False):
     if not use_tiles:
