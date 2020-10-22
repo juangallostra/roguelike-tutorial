@@ -1,6 +1,8 @@
 import libtcodpy as tcod
 from entities import *
 from tile_loader import ORC_TILE, TROLL_TILE
+from config import USE_TILES
+
 
 ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
@@ -296,8 +298,7 @@ class GameMap():
                     monster = BaseObject(
                         x,
                         y,
-                        # ORC_TILE,
-                        'O',
+                        ORC_TILE[USE_TILES],
                         ORC,
                         # tcod.white,
                         tcod.desaturated_green,
@@ -312,8 +313,7 @@ class GameMap():
                     monster = BaseObject(
                         x,
                         y,
-                        # TROLL_TILE,
-                        'T',
+                        TROLL_TILE[USE_TILES],
                         TROLL,
                         # tcod.white,
                         tcod.darker_green,

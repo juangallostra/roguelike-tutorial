@@ -6,9 +6,7 @@ from entities import *
 from renderer import RenderScreen
 from game_map import GameMap
 from tile_loader import *
-
-FONT_PATH = 'static/arial10x10.png'
-FONT_FLAGS = tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD
+from config import USE_TILES
 
 def get_key_event(turn_based=None):
     if turn_based:
@@ -48,8 +46,7 @@ def new_game(logger, renderer):
     player = MainPlayer(
         player_pos[0],
         player_pos[1],
-        # PLAYER_TILE,
-        '@',
+        PLAYER_TILE[USE_TILES],
         'player',
         tcod.white,
         blocks=True,
@@ -70,9 +67,6 @@ def new_game(logger, renderer):
     return game_map, player
 
 def main(renderer, game_map, player, logger, turn_based=True):    
-    # Load custom tileset
-    # load_custom_font()
-    
     # Game state and player's last action
     game_state = PLAYING
     player_action = None
@@ -208,7 +202,7 @@ def load_game(game_map, logger):
 if __name__ == "__main__":
     # Game config
     turn_based = True
-    tcod.console_set_custom_font(FONT_PATH, FONT_FLAGS)
+    load_font(use_tiles=USE_TILES)
     tcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE, FULLSCREEN)
     tcod.sys_set_fps(LIMIT_FPS)
     # system wide message logger
