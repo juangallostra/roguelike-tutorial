@@ -75,8 +75,8 @@ Below you can find a list of things that I have done, up to he point were I am c
 - [ ] Move strings to constants (key codes, object names, etc.).
 - [ ] Add method in objects to relocate them in array so that they are drawn in the correct order.
 - [ ] Check real time combat.
-- [ ] Check if `libtcod` can load both a font and a tileset from diferent files. 
-- [ ] Create a tileset loader that handles all the required operations. (retro/no retro, only chars/chars and colors, etc.)
+- [x] Check if `libtcod` can load both a font and a tileset from diferent files. 
+- [x] Create a tileset loader that handles all the required operations. (retro/no retro, only chars/chars and colors, etc.)
 - [ ] Document code.
 - [ ] Change color palette.
 - [ ] Add option to play with alphanumeric chars instead of colors/tilesets.
