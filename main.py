@@ -54,12 +54,12 @@ def new_game(logger, renderer):
         logger=logger)
     # initial equipment: a dagger
     equipment_component = Equipment(slot=RIGHT_HAND, power_bonus=2)
-    obj = BaseObject(player.get_x_position(), player.get_y_position, '-', 'dagger', tcod.sky,logger=logger, equipment=equipment_component)
+    obj = BaseObject(player.get_x_position(), player.get_y_position, DAGGER_TILE[USE_TILES], 'dagger', tcod.sky, logger=logger, equipment=equipment_component)
     player.inventory.append(obj)
     equipment_component.equip(player.inventory)
     obj.always_visible = True
+   
     # Greet the player
-
     logger.log_message(
         'Welcome stranger! Prepare to perish in the Tombs of the Ancient Kings.',
         tcod.red

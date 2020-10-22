@@ -16,7 +16,8 @@ OFFSET = 256
 # Give tiles a meaningful name
 PLAYER_TILE = { True: OFFSET + 5, False: '@'}
 ORC_TILE = { True: OFFSET + 11, False: 'O'}
-TROLL_TILE = { True:OFFSET + 13, False: 'T'}
+TROLL_TILE = { True: OFFSET + 13, False: 'T'}
+DAGGER_TILE = { True: '-', False: '-'}
 
 
 def load_font(use_tiles=False):
