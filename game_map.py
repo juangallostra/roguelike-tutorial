@@ -121,7 +121,7 @@ class GameMap():
         # first test the map tile
         if self.map[x][y].blocked:
             return True
-        #now check for any blocking objects
+        # now check for any blocking objects
         for element in to_check:
             if element.blocks and element.get_x_position() == x and element.get_y_position() == y:
                 return True
@@ -143,7 +143,6 @@ class GameMap():
         choice = 0
         for w in chances:
             running_sum += w
- 
             # see if the dice landed in the part that corresponds to this choice
             if dice <= running_sum:
                 return choice
@@ -426,6 +425,7 @@ class GameMap():
         self.change_level(0)
     
     def init_fov(self):
+        # Generate Field of View maps
         self.fov_maps = {
             i: tcod.map_new(self._width, self._height) for i in range(N_LEVELS)
         }
