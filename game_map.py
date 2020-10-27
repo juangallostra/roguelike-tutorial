@@ -76,11 +76,12 @@ class GameMap():
         self.fov_recompute = True # light the initial position of the player
         # FOV maps have to be generated after dungeon generation
         # because if they are created before all tiles are blocked
-        # the FOV algorithm doesn't work as expected
+        # since there is no level data. This results in the 
+        # FOV algorithm not working as expected
         self.fov_maps = None
         self.fov_map = None
 
-        # item and monster chances
+        # item and monster chances, level configuration
         self._monster_chances = {ORC: 80, TROLL: 20}
         self._item_chances = {HEAL: 70, LIGHTNING: 10, FIREBALL: 10, CONFUSE: 10, SWORD:25}
         self._max_monsters = MAX_ROOM_MONSTERS
@@ -91,16 +92,16 @@ class GameMap():
         closest_enemy = None
         closest_dist = max_range + 1  # start with (slightly more than) maximum range
  
-        for o in self.level_objects:
-            if o.fighter and not o == player and tcod.map_is_in_fov(
+        for entity in self.level_objects:
+            if entity.fighter and not entity == player and tcod.map_is_in_fov(
                 self.fov_map, 
-                o.get_x_position(), 
-                o.get_y_position()
+                entity.get_x_position(), 
+                entity.get_y_position()
             ):
                 # calculate distance between this object and the player
-                dist = player.distance_to(o)
+                dist = player.distance_to(entity)
                 if dist < closest_dist:  # it's closer, so remember it
-                    closest_enemy = o
+                    closest_enemy = entity
                     closest_dist = dist
         return closest_enemy
 
