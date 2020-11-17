@@ -89,6 +89,6 @@ Below you can find a list of things that I have done, up to he point were I am c
 
 ## WISH List
 
-- [ ] Add more enemies
-- [ ] Add more equipment
-- [ ] Add functionality to make enemies drop items when killed
+- [ ] Add more enemies.
+- [ ] Add more equipment.
+- [ ] Add functionality to make enemies drop items when killed.
